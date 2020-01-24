@@ -1,0 +1,508 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <kml xmlns="http://earth.google.com/kml/2.2">
+    <Document>
+      <name> OPP Game </name>
+      <Style id="check-hide-children">        <ListStyle>
+          <listItemType>checkHideChildren</listItemType>
+        </ListStyle>
+      </Style>
+      <styleUrl>#check-hide-children</styleUrl>      <Style id="Terrorist">
+        <IconStyle>
+          <scale>1.0</scale>
+          <Icon>
+            <href>http://maps.google.com/mapfiles/kml/paddle/ylw-blank.png</href>
+          </Icon>
+        </IconStyle>
+      </Style>
+      <Style id="robot">
+        <IconStyle>
+          <scale>1.0</scale>
+          <Icon>
+            <href>http://maps.google.com/mapfiles/kml/pal4/icon54.png</href>
+          </Icon>
+        </IconStyle>
+      </Style>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:08.206Z</when>
+        </TimeStamp>        <styleUrl>#Terrorist</styleUrl>
+        <Point>
+          <coordinates>35.197656770719604,32.10191878639921</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:08.206Z</when>
+        </TimeStamp>        <styleUrl>#robot</styleUrl>
+        <Point>
+          <coordinates>35.19597880064568,32.10154696638656</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:08.308Z</when>
+        </TimeStamp>        <styleUrl>#Terrorist</styleUrl>
+        <Point>
+          <coordinates>35.197656770719604,32.10191878639921</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:08.308Z</when>
+        </TimeStamp>        <styleUrl>#robot</styleUrl>
+        <Point>
+          <coordinates>35.19597880064568,32.10154696638656</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:08.410Z</when>
+        </TimeStamp>        <styleUrl>#Terrorist</styleUrl>
+        <Point>
+          <coordinates>35.197656770719604,32.10191878639921</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:08.410Z</when>
+        </TimeStamp>        <styleUrl>#robot</styleUrl>
+        <Point>
+          <coordinates>35.19597880064568,32.10154696638656</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:08.512Z</when>
+        </TimeStamp>        <styleUrl>#Terrorist</styleUrl>
+        <Point>
+          <coordinates>35.197656770719604,32.10191878639921</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:08.512Z</when>
+        </TimeStamp>        <styleUrl>#robot</styleUrl>
+        <Point>
+          <coordinates>35.19597880064568,32.10154696638656</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:08.614Z</when>
+        </TimeStamp>        <styleUrl>#Terrorist</styleUrl>
+        <Point>
+          <coordinates>35.197656770719604,32.10191878639921</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:08.614Z</when>
+        </TimeStamp>        <styleUrl>#robot</styleUrl>
+        <Point>
+          <coordinates>35.19597880064568,32.10154696638656</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:08.716Z</when>
+        </TimeStamp>        <styleUrl>#Terrorist</styleUrl>
+        <Point>
+          <coordinates>35.197656770719604,32.10191878639921</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:08.716Z</when>
+        </TimeStamp>        <styleUrl>#robot</styleUrl>
+        <Point>
+          <coordinates>35.19597880064568,32.10154696638656</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:08.818Z</when>
+        </TimeStamp>        <styleUrl>#Terrorist</styleUrl>
+        <Point>
+          <coordinates>35.197656770719604,32.10191878639921</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:08.818Z</when>
+        </TimeStamp>        <styleUrl>#robot</styleUrl>
+        <Point>
+          <coordinates>35.19597880064568,32.10154696638656</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:08.919Z</when>
+        </TimeStamp>        <styleUrl>#Terrorist</styleUrl>
+        <Point>
+          <coordinates>35.197656770719604,32.10191878639921</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:08.919Z</when>
+        </TimeStamp>        <styleUrl>#robot</styleUrl>
+        <Point>
+          <coordinates>35.19597880064568,32.10154696638656</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:09.021Z</when>
+        </TimeStamp>        <styleUrl>#Terrorist</styleUrl>
+        <Point>
+          <coordinates>35.197656770719604,32.10191878639921</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:09.021Z</when>
+        </TimeStamp>        <styleUrl>#robot</styleUrl>
+        <Point>
+          <coordinates>35.19597880064568,32.10154696638656</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:09.124Z</when>
+        </TimeStamp>        <styleUrl>#Terrorist</styleUrl>
+        <Point>
+          <coordinates>35.197656770719604,32.10191878639921</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:09.124Z</when>
+        </TimeStamp>        <styleUrl>#robot</styleUrl>
+        <Point>
+          <coordinates>35.19597880064568,32.10154696638656</coordinates>
+        </Point>
+      </Placemark>
+</Document>
+</kml>      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:09.231Z</when>
+        </TimeStamp>        <styleUrl>#Terrorist</styleUrl>
+        <Point>
+          <coordinates>35.197656770719604,32.10191878639921</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:09.231Z</when>
+        </TimeStamp>        <styleUrl>#robot</styleUrl>
+        <Point>
+          <coordinates>35.19597880064568,32.10154696638656</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:09.332Z</when>
+        </TimeStamp>        <styleUrl>#Terrorist</styleUrl>
+        <Point>
+          <coordinates>35.197656770719604,32.10191878639921</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:09.332Z</when>
+        </TimeStamp>        <styleUrl>#robot</styleUrl>
+        <Point>
+          <coordinates>35.19597880064568,32.10154696638656</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:09.433Z</when>
+        </TimeStamp>        <styleUrl>#Terrorist</styleUrl>
+        <Point>
+          <coordinates>35.197656770719604,32.10191878639921</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:09.433Z</when>
+        </TimeStamp>        <styleUrl>#robot</styleUrl>
+        <Point>
+          <coordinates>35.19597880064568,32.10154696638656</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:09.535Z</when>
+        </TimeStamp>        <styleUrl>#Terrorist</styleUrl>
+        <Point>
+          <coordinates>35.197656770719604,32.10191878639921</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:09.535Z</when>
+        </TimeStamp>        <styleUrl>#robot</styleUrl>
+        <Point>
+          <coordinates>35.19597880064568,32.10154696638656</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:09.636Z</when>
+        </TimeStamp>        <styleUrl>#Terrorist</styleUrl>
+        <Point>
+          <coordinates>35.197656770719604,32.10191878639921</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:09.636Z</when>
+        </TimeStamp>        <styleUrl>#robot</styleUrl>
+        <Point>
+          <coordinates>35.19597880064568,32.10154696638656</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:09.737Z</when>
+        </TimeStamp>        <styleUrl>#Terrorist</styleUrl>
+        <Point>
+          <coordinates>35.197656770719604,32.10191878639921</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:09.737Z</when>
+        </TimeStamp>        <styleUrl>#robot</styleUrl>
+        <Point>
+          <coordinates>35.19597880064568,32.10154696638656</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:09.838Z</when>
+        </TimeStamp>        <styleUrl>#Terrorist</styleUrl>
+        <Point>
+          <coordinates>35.197656770719604,32.10191878639921</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:09.838Z</when>
+        </TimeStamp>        <styleUrl>#robot</styleUrl>
+        <Point>
+          <coordinates>35.19597880064568,32.10154696638656</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:09.940Z</when>
+        </TimeStamp>        <styleUrl>#Terrorist</styleUrl>
+        <Point>
+          <coordinates>35.197656770719604,32.10191878639921</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:09.940Z</when>
+        </TimeStamp>        <styleUrl>#robot</styleUrl>
+        <Point>
+          <coordinates>35.19597880064568,32.10154696638656</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:10.042Z</when>
+        </TimeStamp>        <styleUrl>#Terrorist</styleUrl>
+        <Point>
+          <coordinates>35.197656770719604,32.10191878639921</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:10.042Z</when>
+        </TimeStamp>        <styleUrl>#robot</styleUrl>
+        <Point>
+          <coordinates>35.19597880064568,32.10154696638656</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:10.143Z</when>
+        </TimeStamp>        <styleUrl>#Terrorist</styleUrl>
+        <Point>
+          <coordinates>35.197656770719604,32.10191878639921</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:10.143Z</when>
+        </TimeStamp>        <styleUrl>#robot</styleUrl>
+        <Point>
+          <coordinates>35.19597880064568,32.10154696638656</coordinates>
+        </Point>
+      </Placemark>
+</Document>
+</kml>      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:10.249Z</when>
+        </TimeStamp>        <styleUrl>#Terrorist</styleUrl>
+        <Point>
+          <coordinates>35.197656770719604,32.10191878639921</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:10.249Z</when>
+        </TimeStamp>        <styleUrl>#robot</styleUrl>
+        <Point>
+          <coordinates>35.19597880064568,32.10154696638656</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:10.350Z</when>
+        </TimeStamp>        <styleUrl>#Terrorist</styleUrl>
+        <Point>
+          <coordinates>35.197656770719604,32.10191878639921</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:10.350Z</when>
+        </TimeStamp>        <styleUrl>#robot</styleUrl>
+        <Point>
+          <coordinates>35.19597880064568,32.10154696638656</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:10.451Z</when>
+        </TimeStamp>        <styleUrl>#Terrorist</styleUrl>
+        <Point>
+          <coordinates>35.197656770719604,32.10191878639921</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:10.451Z</when>
+        </TimeStamp>        <styleUrl>#robot</styleUrl>
+        <Point>
+          <coordinates>35.19597880064568,32.10154696638656</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:10.553Z</when>
+        </TimeStamp>        <styleUrl>#Terrorist</styleUrl>
+        <Point>
+          <coordinates>35.197656770719604,32.10191878639921</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:10.553Z</when>
+        </TimeStamp>        <styleUrl>#robot</styleUrl>
+        <Point>
+          <coordinates>35.19597880064568,32.10154696638656</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:10.655Z</when>
+        </TimeStamp>        <styleUrl>#Terrorist</styleUrl>
+        <Point>
+          <coordinates>35.197656770719604,32.10191878639921</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:10.655Z</when>
+        </TimeStamp>        <styleUrl>#robot</styleUrl>
+        <Point>
+          <coordinates>35.19597880064568,32.10154696638656</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:10.757Z</when>
+        </TimeStamp>        <styleUrl>#Terrorist</styleUrl>
+        <Point>
+          <coordinates>35.197656770719604,32.10191878639921</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:10.757Z</when>
+        </TimeStamp>        <styleUrl>#robot</styleUrl>
+        <Point>
+          <coordinates>35.19597880064568,32.10154696638656</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:10.859Z</when>
+        </TimeStamp>        <styleUrl>#Terrorist</styleUrl>
+        <Point>
+          <coordinates>35.197656770719604,32.10191878639921</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:10.859Z</when>
+        </TimeStamp>        <styleUrl>#robot</styleUrl>
+        <Point>
+          <coordinates>35.19597880064568,32.10154696638656</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:10.961Z</when>
+        </TimeStamp>        <styleUrl>#Terrorist</styleUrl>
+        <Point>
+          <coordinates>35.197656770719604,32.10191878639921</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:10.961Z</when>
+        </TimeStamp>        <styleUrl>#robot</styleUrl>
+        <Point>
+          <coordinates>35.19597880064568,32.10154696638656</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:11.063Z</when>
+        </TimeStamp>        <styleUrl>#Terrorist</styleUrl>
+        <Point>
+          <coordinates>35.197656770719604,32.10191878639921</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:11.063Z</when>
+        </TimeStamp>        <styleUrl>#robot</styleUrl>
+        <Point>
+          <coordinates>35.19597880064568,32.10154696638656</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:11.164Z</when>
+        </TimeStamp>        <styleUrl>#Terrorist</styleUrl>
+        <Point>
+          <coordinates>35.197656770719604,32.10191878639921</coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <TimeStamp>
+          <when>2020-01-24T01:08:11.164Z</when>
+        </TimeStamp>        <styleUrl>#robot</styleUrl>
+        <Point>
+          <coordinates>35.19597880064568,32.10154696638656</coordinates>
+        </Point>
+      </Placemark>
+</Document>
+</kml>
