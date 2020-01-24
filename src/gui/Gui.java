@@ -114,7 +114,6 @@ public class Gui extends Application implements Drawable, EventHandler {
     private double scale(double data, double r_min, double r_max,
                          double t_min, double t_max)
     {
-
         double res = ((data - r_min) / (r_max-r_min)) * (t_max - t_min) + t_min;
         return res;
     }
@@ -130,7 +129,6 @@ public class Gui extends Application implements Drawable, EventHandler {
         for (int x : g.getNodeMap().keySet()) {
             if (Math.abs(g.getNodeMap().get(x).getLocation().x()) > maxX) {
                 maxX = g.getNodeMap().get(x).getLocation().x();
-
             }
         }
         maxx=maxX;
@@ -147,7 +145,6 @@ public class Gui extends Application implements Drawable, EventHandler {
         for (int x : g.getNodeMap().keySet()) {
             if (Math.abs(g.getNodeMap().get(x).getLocation().y()) > maxY) {
                 maxY = g.getNodeMap().get(x).getLocation().y();
-
             }
         }
         maxy=maxY;
@@ -164,7 +161,6 @@ public class Gui extends Application implements Drawable, EventHandler {
         for (int x : g.getNodeMap().keySet()) {
             if (g.getNodeMap().get(x).getLocation().y() < minY) {
                 minY = g.getNodeMap().get(x).getLocation().y();
-
             }
         }
         miny=minY;
@@ -180,7 +176,6 @@ public class Gui extends Application implements Drawable, EventHandler {
         for (int x : g.getNodeMap().keySet()) {
             if (g.getNodeMap().get(x).getLocation().x() < minX) {
                 minX = g.getNodeMap().get(x).getLocation().x();
-
             }
         }
         minx=minX;
@@ -211,8 +206,6 @@ public class Gui extends Application implements Drawable, EventHandler {
     public void start(Stage stage) throws Exception {
 
         game = new Group();
-
-
 
         if(server!=(null)) server.stopGame();
         timeGame.stop();

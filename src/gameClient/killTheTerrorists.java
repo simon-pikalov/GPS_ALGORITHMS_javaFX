@@ -148,6 +148,7 @@ public class killTheTerrorists implements Gamable,Runnable {
                 dest = Robot.getInt("dest");
                 speed = Robot.getDouble("speed");
                 robots[sum] = new robot(id, src, dest, value, speed);
+                robots[sum].setTarget(new Point3D(0,0,0));
                 sum++;
             }
         } catch (Exception e) {
@@ -186,7 +187,6 @@ public class killTheTerrorists implements Gamable,Runnable {
                 robots[sum].setSrc(src);
                 robots[sum].setDestNode(dest);
                 robots[sum].setLocation(pos);
-
                 sum++;
             }
         } catch (Exception e) {
@@ -217,8 +217,6 @@ public class killTheTerrorists implements Gamable,Runnable {
         for (int i = 0; i <fruits.length ; i++) {
             fruitsHistory[i]=new fruit(fruits[i].getValue(),fruits[i].getType(),new Point3D(fruits[i].getLocation()));
         }
-
-
     }
 
 
@@ -232,14 +230,15 @@ public class killTheTerrorists implements Gamable,Runnable {
             for (int i = 0; i < robots.length; i++) {
                 if (robots[i].getRoute() == null || robots[i].getRoute().isEmpty() ) { //if robot already geted to it's target
                     robots[i].setOnWay(false);
-                    calcShortestPath();}
+                    calcShortestPath(false);}
                     deepCopyFruit();
                     server.chooseNextEdge(robots[i].getID(), robots[i].getRoute().get(0).getKey());
                     if(robots[i].getSrcNode() == robots[i].getRoute().get(0).getKey()) {
                         robots[i].getRoute().remove(0);
-                        if(Arrays.equals(fruitsHistory,fruits)) {
-                            System.out.println("worked");
-                            calcShortestPath();}
+                        initFruits();
+                        if(!Arrays.equals(fruitsHistory,fruits)) {
+                            System.out.println(" history worked");
+                            calcShortestPath(true);}
 
                     }
                 }
@@ -252,18 +251,22 @@ public class killTheTerrorists implements Gamable,Runnable {
 
     }
 
-
-    private synchronized void calcShortestPath() {
+    /**
+     *
+     * @param zeroFruit if we want to recalculate because some fruit was disapired
+     */
+    private synchronized void calcShortestPath(boolean zeroFruit) {
         int dst = -1;
         int end = -1;
         initFruits();
 
+        if(zeroFruit){ //if it's a second calc for this fruit dua a beeter robot captured it target do not zero the fruit frice
         for (int i = 0; i <fruits.length ; i++) { //zero the fruit  price tp infinity
             fruits[i].setCoast(Integer.MAX_VALUE);
-        }
+        }}
 
         for (int i = 0; i < robots.length; i++) {
-            System.out.println(robots[i]);
+
             if (robots[i].isOnWay()) {continue;}
             robots[i].setCoast(Integer.MAX_VALUE);
 
@@ -283,19 +286,23 @@ public class killTheTerrorists implements Gamable,Runnable {
                 LinkedList<node_data> shortTempList = new LinkedList<node_data>();
                 if (src == dst) { ///if needd to only one step
                     shortTempList.addLast(GameGraph.getAlgoGraph().getNode(end)); // add the last node
-                    robots[i].setRoute(shortTempList);
-                    robots[i].setOnWay(true);
-                    continue;
                 }
-                shortTempList = (LinkedList<node_data>) this.getGameGraph().shortestPath(src, dst); //get shortest path to one vertex before
-                if (shortTempList == null) continue;
-                shortTempList.addLast(this.getGameGraph().getAlgoGraph().getNode(end)); // puth the last node at the end of the list
+                else {
+                    shortTempList = (LinkedList<node_data>) this.getGameGraph().shortestPath(src, dst); //get shortest path to one vertex before
+                    if (shortTempList == null) continue;
+                    shortTempList.addLast(this.getGameGraph().getAlgoGraph().getNode(end)); // puth the last node at the end of the list
+                }
                 double tempCoast = (GameGraph.shortestPathDist(src, dst,false));
-                System.out.println(robots[i].getCoast()+"> ? "+tempCoast);
-                if ( shortTempList != null&&fruits[j].getWeight()>tempCoast&&robots[i].getCoast() > tempCoast) { //robots[i].getCoast() > tempCoast && shortTempList != null&&fruits[j].getWeight()>tempCoast
+                if ( shortTempList != null&&fruits[j].getWeight()>tempCoast&&robots[i].getCoast() > tempCoast) {// we found a faster way
+                    robots[i].setTarget(fruits[j].getLocation());
                     robots[i].setRoute(shortTempList);
                     robots[i].setCoast(tempCoast);
                     fruits[j].setCoast(tempCoast);
+                    for(int r =0 ; r<i ;r++) { // if some other robot is aiming at curr fruit recalculate fot them
+                     if(robots[r].getTarget()==fruits[j].getLocation()) {robots[r].setOnWay(false);
+                         System.out.println("double target worked");
+                    }}
+
                 }
 
 
@@ -308,6 +315,102 @@ public class killTheTerrorists implements Gamable,Runnable {
 
 
     }
+
+
+
+
+
+
+   // ************************************************************************************************************
+
+
+
+    public void moveCheat() {
+
+        try {
+
+            updateRobots();
+            for (int i = 0; i <1; i++) {
+                if (robots[i].getRoute() == null || robots[i].getRoute().isEmpty() ) { //if robot already geted to it's target
+                    robots[i].setOnWay(false);
+                  calcShortestPathcheaT();}
+
+                server.chooseNextEdge(robots[i].getID(), robots[i].getRoute().get(0).getKey());
+                if(robots[i].getSrcNode() == robots[i].getRoute().get(0).getKey()) {
+                    robots[i].getRoute().remove(0);
+                }
+            }
+
+
+        } catch (RuntimeException r) {
+
+        }
+
+
+    }
+
+
+
+
+
+
+
+
+
+    private synchronized void calcShortestPathcheaT() {
+        int dst = -1;
+        int end = -1;
+        initFruits();
+
+
+
+        for (int i = 0; i < 1; i++) {
+
+            if (robots[i].isOnWay()) {continue;}
+
+
+            int src = robots[i].getSrcNode();
+
+            for (int j = 0; j < fruits.length; j++) {
+
+                if (fruits[j].getType() == 1) {
+                    dst = Math.min(fruits[j].getEdgeOfFruit().getDest(), fruits[j].getEdgeOfFruit().getSrc());
+                    end = Math.max(fruits[j].getEdgeOfFruit().getDest(), fruits[j].getEdgeOfFruit().getSrc());
+
+                } else {
+                    dst = Math.max(fruits[j].getEdgeOfFruit().getDest(), fruits[j].getEdgeOfFruit().getSrc());
+                    end = Math.min(fruits[j].getEdgeOfFruit().getDest(), fruits[j].getEdgeOfFruit().getSrc());
+                }
+
+                LinkedList<node_data> shortTempList = new LinkedList<node_data>();
+                if (src == dst) { ///if needd to only one step
+                    shortTempList.addLast(GameGraph.getAlgoGraph().getNode(end)); // add the last node
+                }
+                else {
+                    shortTempList = (LinkedList<node_data>) this.getGameGraph().shortestPath(src, dst); //get shortest path to one vertex before
+                    if (shortTempList == null) continue;
+                    shortTempList.addLast(this.getGameGraph().getAlgoGraph().getNode(end)); // puth the last node at the end of the list
+                }
+
+            }
+
+        }
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+//***********************************************************************************************
+
 
 
     public void updatePlayerStatus() {
@@ -428,6 +531,7 @@ public class killTheTerrorists implements Gamable,Runnable {
                     edge_data temp = GameGraph.getAlgoGraph().getNeighbore().get(x).get(y);
                     if (checker(temp, fruits[i])) {
                         fruits[i].setEdgeOfFruit(temp);
+                        fruits[i].setCoast(Integer.MAX_VALUE);
                     }
                 }
             }

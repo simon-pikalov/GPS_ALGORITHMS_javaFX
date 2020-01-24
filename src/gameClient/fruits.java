@@ -49,5 +49,6 @@ public interface fruits extends Serializable {
     public double getWeight();
 
 
+
     }
 

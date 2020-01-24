@@ -100,4 +100,10 @@ public interface robots extends Serializable {
 
     public double getCoast();
 
+    public Point3D getTarget() ;
+
+    public void setTarget(Point3D target) ;
+
+
+
 }

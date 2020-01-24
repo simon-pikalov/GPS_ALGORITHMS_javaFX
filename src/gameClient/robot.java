@@ -4,6 +4,7 @@ import Server.game_service;
 import dataStructure.edge;
 import dataStructure.node_data;
 import oop_dataStructure.oop_graph;
+import oop_utils.OOP_Point3D;
 import org.json.JSONException;
 import org.json.JSONObject;
 import utils.Point3D;
@@ -25,6 +26,7 @@ public class robot implements robots {
     double speed;
     double coast;
     boolean onWay;
+    Point3D target;
     List<node_data> Route;
 
     /**
@@ -218,7 +220,14 @@ this.coast=coast;
         return coast;
     }
 
-
+    @Override
+    public Point3D getTarget() {
+        return target;
+    }
+    @Override
+    public void setTarget(Point3D target) {
+        this.target = target;
+    }
 
 
 }
