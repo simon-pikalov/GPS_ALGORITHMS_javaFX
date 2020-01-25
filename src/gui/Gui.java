@@ -14,6 +14,10 @@ import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -34,7 +38,10 @@ import java.awt.Dimension;
 
 import java.awt.Toolkit;
 import java.io.FileInputStream;
+import java.sql.*;
 import java.util.Optional;
+
+import static gameClient.SimpleDB.jdbcUrl;
 
 /**
  * This class represent a Gui as JavaFX Application of the Game Catch The Terrorist
@@ -66,6 +73,9 @@ public class Gui extends Application implements Drawable, EventHandler {
     private  static Group game;
     private  static  int robotMax;
     private  static  boolean auto;
+    public static final String jdbcUrl="jdbc:mysql://db-mysql-ams3-67328-do-user-4468260-0.db.ondigitalocean.com:25060/oop?useUnicode=yes&characterEncoding=UTF-8&useSSL=false";
+    public static final String jdbcUser="student";
+    public static final String jdbcUserPassword="OOP2020student";
 
 
 
@@ -205,6 +215,8 @@ public class Gui extends Application implements Drawable, EventHandler {
     @Override
     public void start(Stage stage) throws Exception {
 
+
+
         game = new Group();
 
         if(server!=(null)) server.stopGame();
@@ -244,61 +256,61 @@ public class Gui extends Application implements Drawable, EventHandler {
         messeges.getChildren().add(teror);
         startMessege.setFill(Color.DARKGOLDENROD);
 
-
-
-// Create the custom dialog.
-        Dialog<Pair<String, String>> dialog = new Dialog<>();
-        dialog.setTitle("Kill the terrosrist");
-        dialog.setHeaderText("Login");
-
-// Set the icon (must be included in the project).
-        dialog.setGraphic(new ImageView(tank));
-
-// Set the button types.
-        ButtonType loginButtonType = new ButtonType("Start ", ButtonBar.ButtonData.OK_DONE);
-        dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
-
-// Create the username and password labels and fields.
-        GridPane grid = new GridPane();
-        grid.setHgap(10);
-        grid.setVgap(10);
-        grid.setPadding(new Insets(20, 150, 10, 10));
-
-        TextField username = new TextField();
-        username.setPromptText("ID");
-
-
-        grid.add(new Label("ID:"), 0, 0);
-        grid.add(username, 1, 0);
-
-// Enable/Disable login button depending on whether a username was entered.
-        Node loginButton = dialog.getDialogPane().lookupButton(loginButtonType);
-        loginButton.setDisable(true);
-
-// Do some validation (using the Java 8 lambda syntax).
-        username.textProperty().addListener((observable, oldValue, newValue) -> {
-            loginButton.setDisable(newValue.trim().isEmpty());
-        });
-
-        dialog.getDialogPane().setContent(grid);
-
-// Request focus on the username field by default.
-        Platform.runLater(() -> username.requestFocus());
-
-// Convert the result to a username-password-pair when the login button is clicked.
-        dialog.setResultConverter(dialogButton -> {
-            if (dialogButton == loginButtonType) {
-                return new Pair<>(username.getText(),null);
-            }
-            return null;
-        });
-
-        Optional<Pair<String, String>> result = dialog.showAndWait();
-
-        result.ifPresent(usernamePassword -> {
-          Game_Server.login(Integer.parseInt(usernamePassword.getKey()));
-        });
-
+//
+//
+//// Create the custom dialog.
+//        Dialog<Pair<String, String>> dialog = new Dialog<>();
+//        dialog.setTitle("Kill the terrosrist");
+//        dialog.setHeaderText("Login");
+//
+//// Set the icon (must be included in the project).
+//        dialog.setGraphic(new ImageView(tank));
+//
+//// Set the button types.
+//        ButtonType loginButtonType = new ButtonType("Start ", ButtonBar.ButtonData.OK_DONE);
+//        dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
+//
+//// Create the username and password labels and fields.
+//        GridPane grid = new GridPane();
+//        grid.setHgap(10);
+//        grid.setVgap(10);
+//        grid.setPadding(new Insets(20, 150, 10, 10));
+//
+//        TextField username = new TextField();
+//        username.setPromptText("ID");
+//
+//
+//        grid.add(new Label("ID:"), 0, 0);
+//        grid.add(username, 1, 0);
+//
+//// Enable/Disable login button depending on whether a username was entered.
+//        Node loginButton = dialog.getDialogPane().lookupButton(loginButtonType);
+//        loginButton.setDisable(true);
+//
+//// Do some validation (using the Java 8 lambda syntax).
+//        username.textProperty().addListener((observable, oldValue, newValue) -> {
+//            loginButton.setDisable(newValue.trim().isEmpty());
+//        });
+//
+//        dialog.getDialogPane().setContent(grid);
+//
+//// Request focus on the username field by default.
+//        Platform.runLater(() -> username.requestFocus());
+//
+//// Convert the result to a username-password-pair when the login button is clicked.
+//        dialog.setResultConverter(dialogButton -> {
+//            if (dialogButton == loginButtonType) {
+//                return new Pair<>(username.getText(),null);
+//            }
+//            return null;
+//        });
+//
+//        Optional<Pair<String, String>> result = dialog.showAndWait();
+//
+//        result.ifPresent(usernamePassword -> {
+//          Game_Server.login(Integer.parseInt(usernamePassword.getKey()));
+//        });
+//
 
         // Adds a Canvas
         stage.setFullScreen(true);
@@ -423,6 +435,61 @@ public class Gui extends Application implements Drawable, EventHandler {
         stage.show();
 
     }
+
+
+//    public  void  drawStatistics(){
+//
+//
+//        Stage stage = new Stage();
+//
+//        String austria = "Austria";
+//        String brazil = "Brazil";
+//        final  String france = "France";
+//        final  String italy = "Italy";
+//        final  String usa = "USA";
+//
+//        stage.setTitle("Kill the terrorist statistics");
+//        final CategoryAxis xAxis = new CategoryAxis();
+//        final NumberAxis yAxis = new NumberAxis();
+//        final BarChart<String,Number> bc = new BarChart<String,Number>(xAxis,yAxis);
+//        bc.setTitle("Best resualt chart ");
+//        xAxis.setLabel("Player");
+//        yAxis.setLabel("Max Score");
+//
+//        XYChart.Series series1 = new XYChart.Series();
+//        series1.setName("2003");
+//        series1.getData().add(new XYChart.Data(austria, 25601.34));
+//        series1.getData().add(new XYChart.Data(brazil, 20148.82));
+//        series1.getData().add(new XYChart.Data(france, 10000));
+//        series1.getData().add(new XYChart.Data(italy, 35407.15));
+//        series1.getData().add(new XYChart.Data(usa, 12000));
+//
+//        XYChart.Series series2 = new XYChart.Series();
+//        series2.setName("2004");
+//        series2.getData().add(new XYChart.Data(austria, 57401.85));
+//        series2.getData().add(new XYChart.Data(brazil, 41941.19));
+//        series2.getData().add(new XYChart.Data(france, 45263.37));
+//        series2.getData().add(new XYChart.Data(italy, 117320.16));
+//        series2.getData().add(new XYChart.Data(usa, 14845.27));
+//
+//        XYChart.Series series3 = new XYChart.Series();
+//        series3.setName("2005");
+//        series3.getData().add(new XYChart.Data(austria, 45000.65));
+//        series3.getData().add(new XYChart.Data(brazil, 44835.76));
+//        series3.getData().add(new XYChart.Data(france, 18722.18));
+//        series3.getData().add(new XYChart.Data(italy, 17557.31));
+//        series3.getData().add(new XYChart.Data(usa, 92633.68));
+//
+//        Scene scene  = new Scene(bc,800,600);
+//        bc.getData().addAll(series1, series2, series3);
+//        stage.setScene(scene);
+//        stage.show();
+//            }
+
+
+
+
+
 
 
 
@@ -830,7 +897,34 @@ public class Gui extends Application implements Drawable, EventHandler {
 
     }
 
+    public static void whileTru() {
 
+        while (true) {
+
+
+            try {
+               // Game_Server.login(Integer.parseInt("320986979"));
+                sgame = new killTheTerrorists();
+                sgame.updatePlayerStatus();
+                sgame.gameInit(23);
+                sgame.builderGame();
+                sgame.getFruits();
+                sgame.initRobot();
+                sgame.getServer().startGame();
+                new Thread(new killTheTerrorists()).start();
+                while (sgame.getServer().isRunning()) {
+                    sgame.move();
+                }
+
+
+
+            } catch (Exception e) {
+
+            }
+
+
+        }
+    }
 
 
 
@@ -846,7 +940,7 @@ public class Gui extends Application implements Drawable, EventHandler {
 
     public static void main(String[] args) {
 
-
+        whileTru();
 
 
     }

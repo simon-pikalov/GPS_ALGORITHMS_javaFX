@@ -33,7 +33,7 @@ public class killTheTerrorists implements Gamable,Runnable {
     private int seem = 0;
     private KML_ kml;
     private  double grade;
-    private double maxLevel;
+    private int maxLevel;
     private int moves;
 
 
@@ -85,7 +85,6 @@ public class killTheTerrorists implements Gamable,Runnable {
                 int type = f.getInt("type");
                 Point3D pos = new Point3D(f.getString("pos").toString());
                 fruits[sum] = new fruit(FruitValue, type, pos);
-
                 sum++;
             }
         } catch (JSONException e) {
@@ -148,7 +147,7 @@ public class killTheTerrorists implements Gamable,Runnable {
                 dest = Robot.getInt("dest");
                 speed = Robot.getDouble("speed");
                 robots[sum] = new robot(id, src, dest, value, speed);
-                robots[sum].setTarget(new Point3D(0,0,0));
+                robots[sum].setTarget(new fruit(0,0,new Point3D(Double.MAX_VALUE,Double.MAX_VALUE,0)));
                 sum++;
             }
         } catch (Exception e) {
@@ -228,20 +227,25 @@ public class killTheTerrorists implements Gamable,Runnable {
 
             updateRobots();
             for (int i = 0; i < robots.length; i++) {
-                if (robots[i].getRoute() == null || robots[i].getRoute().isEmpty() ) { //if robot already geted to it's target
+                if (robots[i].getTarget().getType()==0) { //if robot already geted to it's target
                     robots[i].setOnWay(false);
+                    calcShortestPath(true);}
+                else {
                     calcShortestPath(false);}
-                    deepCopyFruit();
-                    server.chooseNextEdge(robots[i].getID(), robots[i].getRoute().get(0).getKey());
-                    if(robots[i].getSrcNode() == robots[i].getRoute().get(0).getKey()) {
-                        robots[i].getRoute().remove(0);
-                        initFruits();
-                        if(!Arrays.equals(fruitsHistory,fruits)) {
-                            System.out.println(" history worked");
-                            calcShortestPath(true);}
 
+
+                    deepCopyFruit();
+                server.chooseNextEdge(robots[i].getID(), robots[i].getRoute().get(0).getKey());
+                if(robots[i].getSrcNode() == robots[i].getRoute().get(0).getKey()) {
+                    robots[i].getRoute().remove(0);
+                    initFruits();
+                    if(!Arrays.equals(fruitsHistory,fruits)) {
+                          System.out.println(" history worked");
+                            calcShortestPath(false);
                     }
+
                 }
+            }
 
 
         } catch (RuntimeException r) {
@@ -253,19 +257,22 @@ public class killTheTerrorists implements Gamable,Runnable {
 
     /**
      *
-     * @param zeroFruit if we want to recalculate because some fruit was disapired
+     * @param
      */
-    private synchronized void calcShortestPath(boolean zeroFruit) {
+    private synchronized void calcShortestPath(boolean zeroFruits) {
         int dst = -1;
         int end = -1;
         initFruits();
+        double tempCoast ;
 
-        if(zeroFruit){ //if it's a second calc for this fruit dua a beeter robot captured it target do not zero the fruit frice
-        for (int i = 0; i <fruits.length ; i++) { //zero the fruit  price tp infinity
-            fruits[i].setCoast(Integer.MAX_VALUE);
-        }}
+       // if it's a second calc for this fruit dua a beeter robot captured it target do not zero the fruit frice
+            for (int i = 0; i <fruits.length ; i++) { //zero the fruit  price tp infinity
+              if(zeroFruits)  fruits[i].setCoast(Integer.MAX_VALUE);
+            }
 
         for (int i = 0; i < robots.length; i++) {
+
+            System.out.println("robot"+robots[i].getID()+"is picking new target "+"and the zeroFruit is "+zeroFruits);
 
             if (robots[i].isOnWay()) {continue;}
             robots[i].setCoast(Integer.MAX_VALUE);
@@ -286,111 +293,33 @@ public class killTheTerrorists implements Gamable,Runnable {
                 LinkedList<node_data> shortTempList = new LinkedList<node_data>();
                 if (src == dst) { ///if needd to only one step
                     shortTempList.addLast(GameGraph.getAlgoGraph().getNode(end)); // add the last node
+                    tempCoast=(fruits[j].getEdgeOfFruit().getWeight()/robots[i].getSpeed());
                 }
                 else {
                     shortTempList = (LinkedList<node_data>) this.getGameGraph().shortestPath(src, dst); //get shortest path to one vertex before
                     if (shortTempList == null) continue;
                     shortTempList.addLast(this.getGameGraph().getAlgoGraph().getNode(end)); // puth the last node at the end of the list
+                    tempCoast = ((GameGraph.shortestPathDist(src, dst,false)+fruits[j].getEdgeOfFruit().getWeight())/robots[i].getSpeed());
                 }
-                double tempCoast = (GameGraph.shortestPathDist(src, dst,false));
-                if ( shortTempList != null&&fruits[j].getWeight()>tempCoast&&robots[i].getCoast() > tempCoast) {// we found a faster way
-                    robots[i].setTarget(fruits[j].getLocation());
+
+                if ( shortTempList != null&&fruits[j].getWeight()>tempCoast&&(robots[i].getCoast() > tempCoast)) {// we found a faster way
+                    System.out.println("robot number "+robots[i].getID()+"new taeget is "+fruits[j]+"and the minWeight of the fruit is  "+fruits[j].getWeight());
+                    robots[i].setOnWay(true);
+                    robots[i].setTarget(fruits[j]);
                     robots[i].setRoute(shortTempList);
                     robots[i].setCoast(tempCoast);
                     fruits[j].setCoast(tempCoast);
+
                     for(int r =0 ; r<i ;r++) { // if some other robot is aiming at curr fruit recalculate fot them
-                     if(robots[r].getTarget()==fruits[j].getLocation()) {robots[r].setOnWay(false);
-                         System.out.println("double target worked");
-                    }}
+                        if(robots[r].getTarget().equals(fruits[j])) {robots[r].setOnWay(false);
+                            robots[r].setOnWay(false);
+                            robots[r].setRoute(null);
+                            System.out.println("new"+robots[i].getCoast());
+                            System.out.println("old"+robots[r].getCoast());
+                        }}
 
                 }
 
-
-            }
-
-        }
-        for (int i = 0; i <robots.length ; i++) {
-            if(robots[i].getRoute()!=null) robots[i].setOnWay(true);
-        }
-
-
-    }
-
-
-
-
-
-
-   // ************************************************************************************************************
-
-
-
-    public void moveCheat() {
-
-        try {
-
-            updateRobots();
-            for (int i = 0; i <1; i++) {
-                if (robots[i].getRoute() == null || robots[i].getRoute().isEmpty() ) { //if robot already geted to it's target
-                    robots[i].setOnWay(false);
-                  calcShortestPathcheaT();}
-
-                server.chooseNextEdge(robots[i].getID(), robots[i].getRoute().get(0).getKey());
-                if(robots[i].getSrcNode() == robots[i].getRoute().get(0).getKey()) {
-                    robots[i].getRoute().remove(0);
-                }
-            }
-
-
-        } catch (RuntimeException r) {
-
-        }
-
-
-    }
-
-
-
-
-
-
-
-
-
-    private synchronized void calcShortestPathcheaT() {
-        int dst = -1;
-        int end = -1;
-        initFruits();
-
-
-
-        for (int i = 0; i < 1; i++) {
-
-            if (robots[i].isOnWay()) {continue;}
-
-
-            int src = robots[i].getSrcNode();
-
-            for (int j = 0; j < fruits.length; j++) {
-
-                if (fruits[j].getType() == 1) {
-                    dst = Math.min(fruits[j].getEdgeOfFruit().getDest(), fruits[j].getEdgeOfFruit().getSrc());
-                    end = Math.max(fruits[j].getEdgeOfFruit().getDest(), fruits[j].getEdgeOfFruit().getSrc());
-
-                } else {
-                    dst = Math.max(fruits[j].getEdgeOfFruit().getDest(), fruits[j].getEdgeOfFruit().getSrc());
-                    end = Math.min(fruits[j].getEdgeOfFruit().getDest(), fruits[j].getEdgeOfFruit().getSrc());
-                }
-
-                LinkedList<node_data> shortTempList = new LinkedList<node_data>();
-                if (src == dst) { ///if needd to only one step
-                    shortTempList.addLast(GameGraph.getAlgoGraph().getNode(end)); // add the last node
-                }
-                else {
-                    shortTempList = (LinkedList<node_data>) this.getGameGraph().shortestPath(src, dst); //get shortest path to one vertex before
-                    if (shortTempList == null) continue;
-                    shortTempList.addLast(this.getGameGraph().getAlgoGraph().getNode(end)); // puth the last node at the end of the list
-                }
 
             }
 
@@ -399,17 +328,6 @@ public class killTheTerrorists implements Gamable,Runnable {
 
 
     }
-
-
-
-
-
-
-
-
-
-
-//***********************************************************************************************
 
 
 
@@ -418,10 +336,10 @@ public class killTheTerrorists implements Gamable,Runnable {
         try {
             JSONObject line = new JSONObject(server.toString());
             JSONObject server = line.getJSONObject("GameServer");
-          grade  = server.getDouble("grade");
-        grade  = server.getDouble("grade");
-        maxLevel = server.getDouble("max_user_level");
-        moves=server.getInt("moves");
+            grade  = server.getDouble("grade");
+            grade  = server.getDouble("grade");
+            maxLevel = server.getInt("max_user_level");
+            moves=server.getInt("moves");
         }
         catch (Exception r ){
 
@@ -480,7 +398,7 @@ public class killTheTerrorists implements Gamable,Runnable {
         return maxLevel;
     }
 
-    public void setMaxLevel(double maxLevel) {
+    public void setMaxLevel(int maxLevel) {
         this.maxLevel = maxLevel;
     }
 
@@ -586,17 +504,64 @@ public class killTheTerrorists implements Gamable,Runnable {
                 '}';
     }
 
-    public static void main(String[] args) {
-        Gui gui = new Gui();
-        gui.play(args);
 
-        killTheTerrorists test = new killTheTerrorists();
 
-        test.gameInit(0);
 
-        test.Automaticplay();
+    public  boolean chechFast(){
+        boolean fast =false;
+        for(int i = 0 ; i<robots.length;i++){
+
+//        double cB = (disstance(robots[i].getSrcNode(),robots[i].getLocation().y(),robots[i].getRoute().get(0).getLocation().x(),robots[i].getRoute().get(0).getLocation().y()));
+//        double aB = (disstance(robots[i].getLocation().x(),robots[i].getLocation().y(),robots[i].getRoute().get(0).getLocation().x(),robots[i].getRoute().get(0).getLocation().y()));
+            double diss =(disstance(robots[i].getLocation().x(),robots[i].getLocation().y(),robots[i].getTarget().getLocation().x(),robots[i].getTarget().getLocation().y()));
+            double weight = robots[i].getTarget().getWeight();
+            double speed = robots[i].getSpeed();
+
+            if((weight)/(speed*speed)<0.4) fast =true;
+        }
+
+        return fast;
+    }
+
+
+    public double convertTOMeters(double lat1, double lon1, double lat2,double lon2){  // generally used geo measurement function
+
+        if(lat2==Double.MAX_VALUE) return -1;
+
+        double R = 6378.137; // Radius of earth in KM
+        double dLat = lat2 * Math.PI / 180 - lat1 * Math.PI / 180;
+        double dLon = lon2 * Math.PI / 180 - lon1 * Math.PI / 180;
+        double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                        Math.sin(dLon/2) * Math.sin(dLon/2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        double d = R * c;
+        return (d * 1000); // meters
+    }
+
+
+
+    public  double chechFastMil(){
+        updateRobot();
+        double min = Double.MAX_VALUE;
+        for(int i = 0 ; i<robots.length;i++){
+            double weight =robots[i].getCoast();
+            double speed = robots[i].getSpeed();
+            double time = (weight)/(speed*speed);
+
+            if(time<min) {
+                min =time;
+            }
+        }
+        min=min*50;
+        System.out.println("time is "+min);
+        if(min>=250) min=130;
+        if (min <=40) {min=  50;
+            System.out.println("we use "+min);}
+        return  min;
 
     }
+
 
     @Override
     public void run() {
@@ -604,19 +569,35 @@ public class killTheTerrorists implements Gamable,Runnable {
         boolean slow =false;
         try {
             while (server.isRunning()) {
-                fast =false;
-                for(int i = 0 ; i<robots.length;i++){
-
-                    if(robots[i].getRoute()==null||robots[i].getRoute().size()<=2) fast =true;
-                  //  if(robots[i].getSpeed()<2) {slow=true;  }
-                }
                 server.move();
-               if(fast)  Thread.sleep(3); //70
-              else Thread.sleep(5); //250
+                if(chechFast())  Thread.sleep(1); //70
+                else Thread.sleep(1); //250
             }} catch (Exception e) {
             System.out.println("Game has ended");
             System.out.println();
         }
+
+    }
+
+
+
+
+
+
+
+
+
+    public static void main(String[] args) {
+        Gui gui = new Gui();
+        gui.play(args);
+
+        killTheTerrorists test = new killTheTerrorists();
+        test.scenario=0;
+        test.gameInit(0);
+        test.builderGame();
+        System.out.println(test.getGameGraph().getAlgoGraph().getNodeMap());
+
+        test.Automaticplay();
 
     }
 

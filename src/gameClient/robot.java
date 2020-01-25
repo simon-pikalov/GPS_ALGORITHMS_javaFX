@@ -26,8 +26,9 @@ public class robot implements robots {
     double speed;
     double coast;
     boolean onWay;
-    Point3D target;
+    fruits target;
     List<node_data> Route;
+
 
     /**
      * The Constractor of the robot
@@ -221,12 +222,16 @@ this.coast=coast;
     }
 
     @Override
-    public Point3D getTarget() {
+    public fruits getTarget() {
         return target;
     }
     @Override
-    public void setTarget(Point3D target) {
+    public void setTarget(fruits target) {
         this.target = target;
+    }
+
+    public static void main(String[] args) {
+
     }
 
 

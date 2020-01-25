@@ -94,8 +94,7 @@ public class SimpleDB {
 			String allCustomersQuery = "SELECT * FROM Users;";
 			try {
 				Class.forName("com.mysql.jdbc.Driver");
-				Connection connection = 
-						DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcUserPassword);		
+				Connection connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcUserPassword);
 				Statement statement = connection.createStatement();
 				ResultSet resultSet = statement.executeQuery(allCustomersQuery);
 				while(resultSet.next()) {
