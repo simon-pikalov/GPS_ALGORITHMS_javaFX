@@ -256,8 +256,8 @@ public class Gui extends Application implements Drawable, EventHandler {
         messeges.getChildren().add(teror);
         startMessege.setFill(Color.DARKGOLDENROD);
 
-//
-//
+
+
 //// Create the custom dialog.
 //        Dialog<Pair<String, String>> dialog = new Dialog<>();
 //        dialog.setTitle("Kill the terrosrist");
@@ -310,7 +310,7 @@ public class Gui extends Application implements Drawable, EventHandler {
 //        result.ifPresent(usernamePassword -> {
 //          Game_Server.login(Integer.parseInt(usernamePassword.getKey()));
 //        });
-//
+
 
         // Adds a Canvas
         stage.setFullScreen(true);
@@ -670,7 +670,7 @@ public class Gui extends Application implements Drawable, EventHandler {
 
     public void drawFruits() {
         fruitGroup.getChildren().clear();
-        sgame.initFruits();
+    //    sgame.initFruits();
         for(int i =0; i<server.getFruits().size();i++) { //init forms for the robot's
             fruit f = (fruit) sgame.getFruits()[i];
             ImageView terrotist  = new ImageView();

@@ -6,7 +6,6 @@ import algorithms.Graph_Algo;
 //import gui.Gui;
 import dataStructure.*;
 import gui.Gui;
-import oop_dataStructure.OOP_DGraph;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -72,7 +71,7 @@ public class killTheTerrorists implements Gamable,Runnable {
      * initiate the fruits from json with the current scene
      */
     @Override
-    public void initFruits() {
+    public synchronized void  initFruits() {
         fruits = new fruit[server.getFruits().size()];
         int sum = 0;
         try {
@@ -85,6 +84,7 @@ public class killTheTerrorists implements Gamable,Runnable {
                 int type = f.getInt("type");
                 Point3D pos = new Point3D(f.getString("pos").toString());
                 fruits[sum] = new fruit(FruitValue, type, pos);
+                fruits[sum].setCoast(Integer.MAX_VALUE);
                 sum++;
             }
         } catch (JSONException e) {
@@ -125,6 +125,8 @@ public class killTheTerrorists implements Gamable,Runnable {
         Point3D LocationRobot;
 
         try {
+
+
             JSONObject line = new JSONObject(server.toString());
             JSONObject ttt = line.getJSONObject("GameServer");
             int rs = ttt.getInt("robots");
@@ -221,29 +223,20 @@ public class killTheTerrorists implements Gamable,Runnable {
 
 
 
-    public void move() {
+    public synchronized void move() {
+
 
         try {
-
+            initFruits();
             updateRobots();
             for (int i = 0; i < robots.length; i++) {
-                if (robots[i].getTarget().getType()==0) { //if robot already geted to it's target
+                if (robots[i].getRoute() == null || robots[i].getRoute().isEmpty()||!robots[i].isOnWay() ) { //if robot already geted to it's target
                     robots[i].setOnWay(false);
-                    calcShortestPath(true);}
-                else {
-                    calcShortestPath(false);}
+                    calcShortestPath();}
 
-
-                    deepCopyFruit();
                 server.chooseNextEdge(robots[i].getID(), robots[i].getRoute().get(0).getKey());
                 if(robots[i].getSrcNode() == robots[i].getRoute().get(0).getKey()) {
                     robots[i].getRoute().remove(0);
-                    initFruits();
-                    if(!Arrays.equals(fruitsHistory,fruits)) {
-                          System.out.println(" history worked");
-                            calcShortestPath(false);
-                    }
-
                 }
             }
 
@@ -255,26 +248,51 @@ public class killTheTerrorists implements Gamable,Runnable {
 
     }
 
+
+    public void checknewFruit(){
+
+        for (int i = 0; i <fruits.length ; i++) { //zero the fruit  price tp infinity
+            for (int j = 0; j < fruitsHistory.length; j++) {
+                if(fruits[i].equals(fruitsHistory[j])) {
+                    fruits[i].setCoast(fruits[j].getWeight());
+                }
+
+            }
+
+        }
+
+    }
+
     /**
      *
      * @param
      */
-    private synchronized void calcShortestPath(boolean zeroFruits) {
+    private synchronized void calcShortestPath() {
+
+
         int dst = -1;
         int end = -1;
         initFruits();
         double tempCoast ;
 
-       // if it's a second calc for this fruit dua a beeter robot captured it target do not zero the fruit frice
-            for (int i = 0; i <fruits.length ; i++) { //zero the fruit  price tp infinity
-              if(zeroFruits)  fruits[i].setCoast(Integer.MAX_VALUE);
-            }
+
+        updateRobots();
+   ;
 
         for (int i = 0; i < robots.length; i++) {
 
-            System.out.println("robot"+robots[i].getID()+"is picking new target "+"and the zeroFruit is "+zeroFruits);
+            System.out.println("robot"+robots[i].getID()+"is picking new target " );
 
-            if (robots[i].isOnWay()) {continue;}
+
+            if (robots[i].isOnWay()) {
+                for (int r = 0; r <fruits.length ; r++) { //zero the fruit  price tp infinity
+                        if(fruits[r].equals(robots[i].getTarget())) {
+                            fruits[r].setCoast(robots[i].getCoast());
+                            System.out.println("resore price "+robots[i].getCoast());
+                        }
+                    }
+                continue;
+            }
             robots[i].setCoast(Integer.MAX_VALUE);
 
             int src = robots[i].getSrcNode();
@@ -311,11 +329,9 @@ public class killTheTerrorists implements Gamable,Runnable {
                     fruits[j].setCoast(tempCoast);
 
                     for(int r =0 ; r<i ;r++) { // if some other robot is aiming at curr fruit recalculate fot them
-                        if(robots[r].getTarget().equals(fruits[j])) {robots[r].setOnWay(false);
+                        if(robots[r].getTarget().equals(fruits[j])) {
                             robots[r].setOnWay(false);
-                            robots[r].setRoute(null);
-                            System.out.println("new"+robots[i].getCoast());
-                            System.out.println("old"+robots[r].getCoast());
+
                         }}
 
                 }
@@ -449,7 +465,6 @@ public class killTheTerrorists implements Gamable,Runnable {
                     edge_data temp = GameGraph.getAlgoGraph().getNeighbore().get(x).get(y);
                     if (checker(temp, fruits[i])) {
                         fruits[i].setEdgeOfFruit(temp);
-                        fruits[i].setCoast(Integer.MAX_VALUE);
                     }
                 }
             }
