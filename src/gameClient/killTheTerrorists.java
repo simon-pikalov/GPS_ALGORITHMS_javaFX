@@ -72,7 +72,7 @@ public class killTheTerrorists implements Gamable,Runnable {
      * initiate the fruits from json with the current scene
      */
     @Override
-    public void initFruits() {
+    public synchronized void initFruits() {
         fruits = new fruit[server.getFruits().size()];
         int sum = 0;
         try {
@@ -94,6 +94,26 @@ public class killTheTerrorists implements Gamable,Runnable {
         initedgeFruit();
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     /**
      * @return The fruits arr of the cur scene
@@ -228,16 +248,14 @@ public class killTheTerrorists implements Gamable,Runnable {
 
             updateRobots();
             for (int i = 0; i < robots.length; i++) {
-                if (robots[i].getRoute() == null || robots[i].getRoute().isEmpty() ) { //if robot already geted to it's target
+                if (robots[i].getRoute() == null || robots[i].getRoute().isEmpty() ||!robots[i].isOnWay() ) { //if robot already geted to it's target
                     robots[i].setOnWay(false);
-                    calcShortestPath(false);}
+                    calcShortestPath(true);}
                     deepCopyFruit();
-                    server.chooseNextEdge(robots[i].getID(), robots[i].getRoute().get(0).getKey());
+                   if(robots[i].getRoute()!=null){ server.chooseNextEdge(robots[i].getID(), robots[i].getRoute().get(0).getKey());
                     if(robots[i].getSrcNode() == robots[i].getRoute().get(0).getKey()) {
-                        robots[i].getRoute().remove(0);
-                        initFruits();
+                        robots[i].getRoute().remove(0);}
                         if(!Arrays.equals(fruitsHistory,fruits)) {
-                            System.out.println(" history worked");
                             calcShortestPath(true);}
 
                     }
@@ -245,7 +263,7 @@ public class killTheTerrorists implements Gamable,Runnable {
 
 
         } catch (RuntimeException r) {
-
+            System.out.println(r.getCause());
         }
 
 
@@ -258,7 +276,9 @@ public class killTheTerrorists implements Gamable,Runnable {
     private synchronized void calcShortestPath(boolean zeroFruit) {
         int dst = -1;
         int end = -1;
+        double tempCoast;
         initFruits();
+        updateRobots();
 
         if(zeroFruit){ //if it's a second calc for this fruit dua a beeter robot captured it target do not zero the fruit frice
         for (int i = 0; i <fruits.length ; i++) { //zero the fruit  price tp infinity
@@ -267,7 +287,15 @@ public class killTheTerrorists implements Gamable,Runnable {
 
         for (int i = 0; i < robots.length; i++) {
 
-            if (robots[i].isOnWay()) {continue;}
+//             if (robots[i].isOnWay()) {
+//                for (int r = 0; r <fruits.length ; r++) { //zero the fruit  price tp infinity
+//                    if(fruits[r].equals(robots[i].getTarget())) {
+//                        fruits[r].setCoast(robots[i].getCoast());
+//                        System.out.println("resore price "+robots[i].getCoast());
+//                    }
+//                }
+//                continue;
+//            }
             robots[i].setCoast(Integer.MAX_VALUE);
 
             int src = robots[i].getSrcNode();
@@ -281,26 +309,28 @@ public class killTheTerrorists implements Gamable,Runnable {
                 } else {
                     dst = Math.max(fruits[j].getEdgeOfFruit().getDest(), fruits[j].getEdgeOfFruit().getSrc());
                     end = Math.min(fruits[j].getEdgeOfFruit().getDest(), fruits[j].getEdgeOfFruit().getSrc());
+
                 }
 
                 LinkedList<node_data> shortTempList = new LinkedList<node_data>();
-                if (src == dst) { ///if needd to only one step
-                    shortTempList.addLast(GameGraph.getAlgoGraph().getNode(end)); // add the last node
-                }
-                else {
                     shortTempList = (LinkedList<node_data>) this.getGameGraph().shortestPath(src, dst); //get shortest path to one vertex before
-                    if (shortTempList == null) continue;
-                    shortTempList.addLast(this.getGameGraph().getAlgoGraph().getNode(end)); // puth the last node at the end of the list
-                }
-                double tempCoast = (GameGraph.shortestPathDist(src, dst,false));
+                    if (shortTempList == null&&src!=dst){ continue;} // if there is no posiblle way
+                    else if(src ==dst) { //the case it's null
+                       shortTempList = new LinkedList<node_data>(); // if we need to add only yhe end yo the path zero the list so it wont be null
+                    }
+
+                shortTempList.addLast(this.getGameGraph().getAlgoGraph().getNode(end)); // puth the last node at the end of the list
+                tempCoast = ((GameGraph.shortestPathDist(src, dst,false)+fruits[j].getEdgeOfFruit().getWeight())/robots[i].getSpeed());
                 if ( shortTempList != null&&fruits[j].getWeight()>tempCoast&&robots[i].getCoast() > tempCoast) {// we found a faster way
+                    System.out.println("robot number "+robots[i].getID()+"has picked new target "+fruits[j].getValue()+"the time to the fruit is "+tempCoast);
                     robots[i].setTarget(fruits[j].getLocation());
                     robots[i].setRoute(shortTempList);
                     robots[i].setCoast(tempCoast);
+                    robots[i].setOnWay(true);
                     fruits[j].setCoast(tempCoast);
                     for(int r =0 ; r<i ;r++) { // if some other robot is aiming at curr fruit recalculate fot them
-                     if(robots[r].getTarget()==fruits[j].getLocation()) {robots[r].setOnWay(false);
-                         System.out.println("double target worked");
+                     if(robots[r].getTarget().equals(robots[i].getTarget())) {robots[r].setOnWay(false);
+                     System.out.println("robot number "+robots[r].getID()+"target was deletet "+fruits[j].getValue());
                     }}
 
                 }
@@ -309,92 +339,6 @@ public class killTheTerrorists implements Gamable,Runnable {
             }
 
         }
-        for (int i = 0; i <robots.length ; i++) {
-            if(robots[i].getRoute()!=null) robots[i].setOnWay(true);
-        }
-
-
-    }
-
-
-
-
-
-
-   // ************************************************************************************************************
-
-
-
-    public void moveCheat() {
-
-        try {
-
-            updateRobots();
-            for (int i = 0; i <1; i++) {
-                if (robots[i].getRoute() == null || robots[i].getRoute().isEmpty() ) { //if robot already geted to it's target
-                    robots[i].setOnWay(false);
-                  calcShortestPathcheaT();}
-
-                server.chooseNextEdge(robots[i].getID(), robots[i].getRoute().get(0).getKey());
-                if(robots[i].getSrcNode() == robots[i].getRoute().get(0).getKey()) {
-                    robots[i].getRoute().remove(0);
-                }
-            }
-
-
-        } catch (RuntimeException r) {
-
-        }
-
-
-    }
-
-
-
-
-
-
-
-
-
-    private synchronized void calcShortestPathcheaT() {
-        int dst = -1;
-        int end = -1;
-        initFruits();
-
-
-
-        for (int i = 0; i < 1; i++) {
-
-            if (robots[i].isOnWay()) {continue;}
-
-
-            int src = robots[i].getSrcNode();
-
-            for (int j = 0; j < fruits.length; j++) {
-
-                if (fruits[j].getType() == 1) {
-                    dst = Math.min(fruits[j].getEdgeOfFruit().getDest(), fruits[j].getEdgeOfFruit().getSrc());
-                    end = Math.max(fruits[j].getEdgeOfFruit().getDest(), fruits[j].getEdgeOfFruit().getSrc());
-
-                } else {
-                    dst = Math.max(fruits[j].getEdgeOfFruit().getDest(), fruits[j].getEdgeOfFruit().getSrc());
-                    end = Math.min(fruits[j].getEdgeOfFruit().getDest(), fruits[j].getEdgeOfFruit().getSrc());
-                }
-
-                LinkedList<node_data> shortTempList = new LinkedList<node_data>();
-                if (src == dst) { ///if needd to only one step
-                    shortTempList.addLast(GameGraph.getAlgoGraph().getNode(end)); // add the last node
-                }
-                else {
-                    shortTempList = (LinkedList<node_data>) this.getGameGraph().shortestPath(src, dst); //get shortest path to one vertex before
-                    if (shortTempList == null) continue;
-                    shortTempList.addLast(this.getGameGraph().getAlgoGraph().getNode(end)); // puth the last node at the end of the list
-                }
-
-            }
-
-        }
 
 
 
@@ -403,13 +347,6 @@ public class killTheTerrorists implements Gamable,Runnable {
 
 
 
-
-
-
-
-
-
-//***********************************************************************************************
 
 
 
@@ -531,7 +468,6 @@ public class killTheTerrorists implements Gamable,Runnable {
                     edge_data temp = GameGraph.getAlgoGraph().getNeighbore().get(x).get(y);
                     if (checker(temp, fruits[i])) {
                         fruits[i].setEdgeOfFruit(temp);
-                        fruits[i].setCoast(Integer.MAX_VALUE);
                     }
                 }
             }

@@ -109,9 +109,7 @@ public class fruit implements fruits {
         fruit fruit = (fruit) o;
         return Double.compare(fruit.value, value) == 0 &&
                 type == fruit.type &&
-                Double.compare(fruit.Minweight, Minweight) == 0 &&
-                Objects.equals(location, fruit.location) &&
-                Objects.equals(edgeOfFruit, fruit.edgeOfFruit);
+                Objects.equals(location, fruit.location) ;
     }
 
     @Override
