@@ -6,7 +6,6 @@ import algorithms.Graph_Algo;
 //import gui.Gui;
 import dataStructure.*;
 import gui.Gui;
-import oop_dataStructure.OOP_DGraph;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,6 +34,8 @@ public class killTheTerrorists implements Gamable,Runnable {
     private  double grade;
     private double maxLevel;
     private int moves;
+    private static boolean manual;
+    private int userId;
 
 
 
@@ -94,23 +95,6 @@ public class killTheTerrorists implements Gamable,Runnable {
         initedgeFruit();
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -240,8 +224,9 @@ public class killTheTerrorists implements Gamable,Runnable {
     }
 
 
-
-
+    /**
+     * function to move the robot's by find the shortest path  and telling the server to move ich time
+     */
     public void move() {
 
         try {
@@ -270,8 +255,8 @@ public class killTheTerrorists implements Gamable,Runnable {
     }
 
     /**
-     *
-     * @param zeroFruit if we want to recalculate because some fruit was disapired
+     * this function calcs the shrtest path using dijacsra algotithem
+     * @param zeroFruit if you wnat to zero the fruit value
      */
     private synchronized void calcShortestPath(boolean zeroFruit) {
         int dst = -1;
@@ -351,6 +336,7 @@ public class killTheTerrorists implements Gamable,Runnable {
         grade  = server.getDouble("grade");
         maxLevel = server.getDouble("max_user_level");
         moves=server.getInt("moves");
+
         }
         catch (Exception r ){
 
@@ -420,6 +406,24 @@ public class killTheTerrorists implements Gamable,Runnable {
 
     public void setMoves(int moves) {
         this.moves = moves;
+    }
+
+
+    public boolean isManual() {
+        return manual;
+    }
+
+    public void setManual(boolean manual) {
+        this.manual = manual;
+    }
+
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     /**
@@ -554,8 +558,8 @@ public class killTheTerrorists implements Gamable,Runnable {
         }
 
         System.out.println("time is "+min);
-        if(min>130) return  130;
-        if(min<70) return  50;
+        if(min>300) return  200;
+        if(min<50) return  50;
         return (long) min;
 
     }
@@ -569,7 +573,9 @@ public class killTheTerrorists implements Gamable,Runnable {
             while (server.isRunning()) {
                 fast =false;
                 server.move();
-             Thread.sleep(chechFastMil()); //70
+             if(!isManual())Thread.sleep(chechFastMil()); //70
+                else Thread.sleep(20);
+
             }} catch (Exception e) {
             System.out.println("Game has ended");
             System.out.println();

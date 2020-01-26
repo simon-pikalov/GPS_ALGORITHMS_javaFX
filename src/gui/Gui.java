@@ -14,6 +14,10 @@ import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -34,6 +38,7 @@ import java.awt.Dimension;
 
 import java.awt.Toolkit;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Optional;
 
 /**
@@ -63,9 +68,12 @@ public class Gui extends Application implements Drawable, EventHandler {
     private static Group robotGroup;
     private  static Group fruitGroup;
     private  static Group messeges;
+    private  static Group statisticsGroup;
     private  static Group game;
     private  static  int robotMax;
     private  static  boolean auto;
+    private static  int id;
+
 
 
 
@@ -220,7 +228,8 @@ public class Gui extends Application implements Drawable, EventHandler {
 
 
         Group root = new Group();
-
+        statisticsGroup = new Group();
+        root.getChildren().add(statisticsGroup);
         // load the image
         terrotistAImage= new Image(new FileInputStream("1.png"));
         terrotistBImage= new Image(new FileInputStream("-1.png"));
@@ -244,60 +253,8 @@ public class Gui extends Application implements Drawable, EventHandler {
         messeges.getChildren().add(teror);
         startMessege.setFill(Color.DARKGOLDENROD);
 
+                login();
 
-
-// Create the custom dialog.
-        Dialog<Pair<String, String>> dialog = new Dialog<>();
-        dialog.setTitle("Kill the terrosrist");
-        dialog.setHeaderText("Login");
-
-// Set the icon (must be included in the project).
-        dialog.setGraphic(new ImageView(tank));
-
-// Set the button types.
-        ButtonType loginButtonType = new ButtonType("Start ", ButtonBar.ButtonData.OK_DONE);
-        dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
-
-// Create the username and password labels and fields.
-        GridPane grid = new GridPane();
-        grid.setHgap(10);
-        grid.setVgap(10);
-        grid.setPadding(new Insets(20, 150, 10, 10));
-
-        TextField username = new TextField();
-        username.setPromptText("ID");
-
-
-        grid.add(new Label("ID:"), 0, 0);
-        grid.add(username, 1, 0);
-
-// Enable/Disable login button depending on whether a username was entered.
-        Node loginButton = dialog.getDialogPane().lookupButton(loginButtonType);
-        loginButton.setDisable(true);
-
-// Do some validation (using the Java 8 lambda syntax).
-        username.textProperty().addListener((observable, oldValue, newValue) -> {
-            loginButton.setDisable(newValue.trim().isEmpty());
-        });
-
-        dialog.getDialogPane().setContent(grid);
-
-// Request focus on the username field by default.
-        Platform.runLater(() -> username.requestFocus());
-
-// Convert the result to a username-password-pair when the login button is clicked.
-        dialog.setResultConverter(dialogButton -> {
-            if (dialogButton == loginButtonType) {
-                return new Pair<>(username.getText(),null);
-            }
-            return null;
-        });
-
-        Optional<Pair<String, String>> result = dialog.showAndWait();
-
-        result.ifPresent(usernamePassword -> {
-          Game_Server.login(Integer.parseInt(usernamePassword.getKey()));
-        });
 
 
         // Adds a Canvas
@@ -320,7 +277,7 @@ public class Gui extends Application implements Drawable, EventHandler {
         game.getChildren().add(robotGroup);
         Scene scene = new Scene(root);
         scene.setFill(Color.BLACK);
-
+        sgame=new killTheTerrorists();
         Menu m = new Menu("Menu");
         MenuItem [] menuItems = new MenuItem[24];
         m.setStyle("-fx-background-color: #FFDEAD; ");
@@ -376,15 +333,25 @@ public class Gui extends Application implements Drawable, EventHandler {
             public void handle(MouseEvent e) {
                 System.out.println(e.getSource().toString());
                 if(e.getSource().toString().equals("Button[id=2, styleClass=button]'Manual'")) {
+                    sgame.setManual(true);
                     System.out.println("Manual");
                     root.getChildren().remove(messeges);
                     game.getChildren().remove(messeges);
                     menualGame(root);
 
                 } else if(e.getSource().toString().equals("Button[id=1, styleClass=button]'Autonomous'")) {
+                    sgame.setManual(false);
                     automatic();
                 }
-
+                if(e.getSource().toString().contains("Statistic")){
+                    if((e.getClickCount()%2)==1) {
+                        drawStatistics();
+                    }
+                    else {
+                        System.out.println(e.getClickCount());
+                        game.getChildren().remove(statisticsGroup);
+                    }
+                }
 
 
             }
@@ -411,12 +378,21 @@ public class Gui extends Application implements Drawable, EventHandler {
         StackPane r = new StackPane();
 
 
+        Button statistics = new Button("Statistic");
+        statistics.addEventFilter(MouseEvent.MOUSE_CLICKED,eventHandler);
+        statistics.setOnAction(this);
+        statistics.setId("stat");
+        statistics.setTranslateY(20);
+        statistics.setTranslateX(350);
+        statistics.setStyle("-fx-background-color: #a0a093; ");
 
 
 
         // add button
         r.getChildren().add(Autonomous);
         r.getChildren().add(Manual);
+        buttonsGroup
+                .getChildren().add(statistics);
 
         buttonsGroup.getChildren().add(r);
         root.getChildren().add(buttonsGroup);
@@ -424,6 +400,116 @@ public class Gui extends Application implements Drawable, EventHandler {
 
     }
 
+    /**
+     * function to creat a login page
+     */
+    private  void login(){
+
+// Create the custom dialog.
+        Dialog<Pair<String, String>> dialog = new Dialog<>();
+        dialog.setTitle("Kill the terrosrist");
+        dialog.setHeaderText("Login");
+
+// Set the icon (must be included in the project).
+        dialog.setGraphic(new ImageView(tank));
+
+// Set the button types.
+        ButtonType loginButtonType = new ButtonType("Start ", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
+
+// Create the username and password labels and fields.
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+
+        TextField username = new TextField();
+        username.setPromptText("ID");
+
+
+        grid.add(new Label("ID:"), 0, 0);
+        grid.add(username, 1, 0);
+
+// Enable/Disable login button depending on whether a username was entered.
+        Node loginButton = dialog.getDialogPane().lookupButton(loginButtonType);
+        loginButton.setDisable(true);
+
+// Do some validation (using the Java 8 lambda syntax).
+        username.textProperty().addListener((observable, oldValue, newValue) -> {
+            loginButton.setDisable(newValue.trim().isEmpty());
+        });
+
+        dialog.getDialogPane().setContent(grid);
+
+// Request focus on the username field by default.
+        Platform.runLater(() -> username.requestFocus());
+
+// Convert the result to a username-password-pair when the login button is clicked.
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == loginButtonType) {
+                return new Pair<>(username.getText(),null);
+            }
+            return null;
+        });
+
+        Optional<Pair<String, String>> result = dialog.showAndWait();
+
+        result.ifPresent(usernamePassword -> {
+            Game_Server.login(Integer.parseInt(usernamePassword.getKey()));
+            id=Integer.parseInt(usernamePassword.getKey());
+        });
+    }
+
+
+    /**
+     * function to draw statistics
+     */
+    public  void  drawStatistics(){
+
+        sgame.updatePlayerStatus();
+
+        String austria = "Austria";
+        String brazil = "Brazil";
+        final  String france = "France";
+        final  String italy = "Italy";
+        final  String usa = "USA";
+
+
+        final CategoryAxis xAxis = new CategoryAxis();
+        final NumberAxis yAxis = new NumberAxis();
+        final BarChart<String,Number> bc = new BarChart<String,Number>(xAxis,yAxis);
+        bc.setTitle("loged in as "+id+" Max Level is "+sgame.getMaxLevel());
+        xAxis.setLabel("Scene");
+        yAxis.setLabel("Best score");
+
+        XYChart.Series series1 = new XYChart.Series();
+
+
+        XYChart.Series series2 = new XYChart.Series();
+
+        series1.setName("Player resualt");
+        series2.setName("Group resualt");
+
+        XYChart.Series series3 = new XYChart.Series();
+
+
+
+        for (int i = 0; i <24 ; i++) {
+            series1.getData().add(new XYChart.Data(Integer.toString(i), Math.random()*1000));
+            series1.setName("scene"+Integer.toString(i));
+            series2.getData().add(new XYChart.Data(Integer.toString(i), Math.random()*1000));
+        }
+
+        bc.setStyle("-fx-background-color: #b3ff81; ");
+        bc.getData().addAll(series1, series2, series3);
+        bc.setPrefSize(screenWidth,screenHeight);
+        bc.setTranslateY(50);
+        statisticsGroup.getChildren().add(bc);
+        game.getChildren().add(statisticsGroup);
+
+
+
+    }
 
 
 
@@ -586,19 +672,6 @@ public class Gui extends Application implements Drawable, EventHandler {
 
 
 
-    public void updateRobots() {
-        sgame.updateRobot();
-        for (int i = 0; i < robotGroup.getChildren().size(); i++) { //init forms for the robot's
-            robot r = (robot) sgame.getRobots()[i];
-            Point3D fPoint = r.getLocation();
-            double p2x = scale(fPoint.x(), minx, maxx, 100, screenWidth * 0.9);
-            double p2y = scale(fPoint.y(), miny, maxy, 100, screenHeight * 0.9);
-            robotGroup.setTranslateX(p2x);
-            robotGroup.setTranslateY(p2y);
-
-
-        }
-    }
 
 
     public void drawFruits() {
@@ -639,6 +712,7 @@ public class Gui extends Application implements Drawable, EventHandler {
 
 
     public void drawRobots() {
+        sgame.updateRobots();
         robotCounter=0;
         robotGroup.getChildren().clear();
         sgame.updateRobots();
@@ -761,6 +835,12 @@ public class Gui extends Application implements Drawable, EventHandler {
         auto=true;
         mGame = (killTheTerrorists) sgame;
         server.startGame();
+        try {
+            new Thread(new KML_(server,sgame.getScenario())).start();
+        } catch (IOException e) {
+            System.out.println(e.getCause());
+        }
+
         timeGame.start();  // difrent thred
         new Thread  (new killTheTerrorists()).start();
 
@@ -808,13 +888,13 @@ public class Gui extends Application implements Drawable, EventHandler {
 
 
         try {
-            if (!server.isRunning()) {
+            if (!sgame.getServer().isRunning()) {
                 endOfGame();
-                return;
             }
 
 
             if(auto) {sgame.move();}
+            if(sgame.isManual()) sgame.initFruits();
             sgame.updatePlayerStatus();
             Text timeMessege = new Text(50, screenHeight * 0.98, "Time Remaining" + server.timeToEnd() / 1000+"\tMoves "+sgame.getMoves()+"\tScore "+sgame.getGrade());
             timeMessege.setFont(javafx.scene.text.Font.font("Verdana", FontWeight.BOLD, 32));
@@ -830,8 +910,9 @@ public class Gui extends Application implements Drawable, EventHandler {
     }
 
 
-
-
+    /**
+     * function to play the game an iniity amount of time for develpper use
+     */
     public static void whileTru() {
 
         while (true) {

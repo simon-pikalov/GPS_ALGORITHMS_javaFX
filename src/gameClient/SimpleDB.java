@@ -6,7 +6,7 @@
 	import java.sql.Statement;
 /**
  * This class represents a simple example of using MySQL Data-Base.
- * Use this example for writing solution. 
+ * Use this example for writing solution.
  * @author boaz.benmoshe
  *
  */
@@ -14,7 +14,7 @@ public class SimpleDB {
 	public static final String jdbcUrl="jdbc:mysql://db-mysql-ams3-67328-do-user-4468260-0.db.ondigitalocean.com:25060/oop?useUnicode=yes&characterEncoding=UTF-8&useSSL=false";
 	public static final String jdbcUser="student";
 	public static final String jdbcUserPassword="OOP2020student";
-	
+
 	/**
 	 * Simple main for demonstrating the use of the Data-base
 	 * @param args
@@ -23,23 +23,22 @@ public class SimpleDB {
 			int id1 = 320986979;  // "real" existing ID & KML
 			int id2 = 320986979;
 			int level = 0;//1,2,3
-			printLog(id2);
-			//allUsers();	
+			allUsers();
 			//String kml1 = getKML(id1,level);
 			System.out.println("***** KML1 file example: ******");
 			//System.out.println(kml1);
 		}
 	/** simply prints all the games as played by the users (in the database).
-	 * 
+	 *
 	 */
 		public static void printLog(int id) {
 			try {
 				Class.forName("com.mysql.jdbc.Driver");
-				Connection connection = 
+				Connection connection =
 						DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcUserPassword);
 				Statement statement = connection.createStatement();
 				String allCustomersQuery = "SELECT * FROM Logs where userID="+id;
-			
+
 				ResultSet resultSet = statement.executeQuery(allCustomersQuery);
 				int ind =0;
 				while(resultSet.next())
@@ -48,10 +47,10 @@ public class SimpleDB {
 					ind++;
 				}
 				resultSet.close();
-				statement.close();		
-				connection.close();		
+				statement.close();
+				connection.close();
 			}
-			
+
 			catch (SQLException sqle) {
 				System.out.println("SQLException: " + sqle.getMessage());
 				System.out.println("Vendor Error: " + sqle.getErrorCode());
@@ -71,8 +70,8 @@ public class SimpleDB {
 				String allCustomersQuery = "SELECT * FROM Users where userID="+id+";";
 				try {
 					Class.forName("com.mysql.jdbc.Driver");
-					Connection connection = 
-					DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcUserPassword);		
+					Connection connection =
+					DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcUserPassword);
 					Statement statement = connection.createStatement();
 					ResultSet resultSet = statement.executeQuery(allCustomersQuery);
 					if(resultSet!=null && resultSet.next()) {
@@ -83,19 +82,20 @@ public class SimpleDB {
 					System.out.println("SQLException: " + sqle.getMessage());
 					System.out.println("Vendor Error: " + sqle.getErrorCode());
 				}
-				
+
 				catch (ClassNotFoundException e) {
 					e.printStackTrace();
 				}
 				return ans;
 			}
 		public static int allUsers() {
+			System.out.println("222");
 			int ans = 0;
 			String allCustomersQuery = "SELECT * FROM Users;";
 			try {
 				Class.forName("com.mysql.jdbc.Driver");
-				Connection connection = 
-						DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcUserPassword);		
+				Connection connection =
+						DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcUserPassword);
 				Statement statement = connection.createStatement();
 				ResultSet resultSet = statement.executeQuery(allCustomersQuery);
 				while(resultSet.next()) {
@@ -103,18 +103,48 @@ public class SimpleDB {
 					ans++;
 				}
 				resultSet.close();
-				statement.close();		
+				statement.close();
 				connection.close();
 			}
 			catch (SQLException sqle) {
 				System.out.println("SQLException: " + sqle.getMessage());
 				System.out.println("Vendor Error: " + sqle.getErrorCode());
 			}
-			
+
 			catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
 			return ans;
 		}
+
+
+	public static int allUsers2() {
+		System.out.println("222");
+		int ans = 0;
+		String allCustomersQuery = "SELECT * FROM Users;";
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection connection =
+					DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcUserPassword);
+			Statement statement = connection.createStatement();
+			ResultSet resultSet = statement.executeQuery(allCustomersQuery);
+			while(resultSet.next()) {
+				System.out.println("Id: " + resultSet.getInt("UserID")+", max_level:"+resultSet.getInt("levelNum"));
+				ans++;
+			}
+			resultSet.close();
+			statement.close();
+			connection.close();
+		}
+		catch (SQLException sqle) {
+			System.out.println("SQLException: " + sqle.getMessage());
+			System.out.println("Vendor Error: " + sqle.getErrorCode());
+		}
+
+		catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return ans;
 	}
-		
+	}
+

@@ -129,13 +129,12 @@ public class KML_ implements Runnable {
      */
     @Override
     public void run() {
-        int ran=0;
-        while (server.isRunning()&&ran<100) {
+        while (server.isRunning()) {
             try {
                 content += screenShot();
                 writeToFile(content);
                 Thread.sleep(100);
-                ran+=10;
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
