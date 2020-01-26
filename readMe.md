@@ -1,4 +1,4 @@
-# Ex3 Kill The Terrorist
+# Ex4 Kill The Terrorist
 This  project represents a Game based a graph-theory algorithms and java Gui Implemenatation 
  the method's referee to an directional weighted graph , where every vertex is a Gps Coordinate .
  You can see in the graph a road-system or communication with a terrorist on it and a force that is moving that can kill the terrorist 
@@ -11,7 +11,8 @@ This  project represents a Game based a graph-theory algorithms and java Gui Imp
   - Gui Based Game with interactive control's
   - Export a Kml to a Google earth format 
   - Manual Game based on mouse clickes
-  - Automatic  Game based on Dijkstra Algorithm 
+  - Automatic  Game based on Dijkstra Algorithm
+  -show statistics from server 
  
   
   
@@ -22,7 +23,7 @@ check this repo for the SDK :  https://gluonhq.com/products/javafx/
 Then 
 Pull the file from the Git repository with the command : 
 ```sh
-$ git clone --recusive https://github.com/simon-pikalov/OOP_Ex3_gpsFtuit.git`
+$ git clone --recusive https://github.com/simon-pikalov/GPS_ALGORITHMS_javaFX.git`
 ```
 ### The Gui Class : 
 This class represent a Gui as JavaFX Application of the Game Catch The Terrorist

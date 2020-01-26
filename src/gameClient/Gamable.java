@@ -43,11 +43,7 @@ public interface Gamable {
         /**
          *  Automatic play: Move the players to win best
          */
-    public void Automaticplay();
-    /**
-     *Manualgame
-     */
-    public void Manualgame();
+
 
     public  void run();
 

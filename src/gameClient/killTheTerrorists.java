@@ -199,23 +199,9 @@ public class killTheTerrorists implements Gamable,Runnable {
     }
 
 
-    @Override
-    public void Automaticplay() {
-//        server.startGame();
-//        Thread run = new Thread(new killTheTerrorists());
-//        run.start();
-//        while (server.isRunning()) {
-//            System.out.println("server" + server.getRobots());
-//            System.out.println("server" + server.getFruits()+"\n\n");
-//            System.out.println(Arrays.toString(this.robots));
-//            System.out.println(Arrays.toString(this.fruits));
-//            this.move();
-//        }
-
-
-    }
-
-
+    /**
+     * function for deep copy of a fruit
+     */
     private  void deepCopyFruit (){
         fruitsHistory= new fruits[fruits.length];
         for (int i = 0; i <fruits.length ; i++) {
@@ -322,11 +308,9 @@ public class killTheTerrorists implements Gamable,Runnable {
     }
 
 
-
-
-
-
-
+    /**
+     * finction for update the player status
+     */
     public void updatePlayerStatus() {
 
         try {
@@ -349,12 +333,6 @@ public class killTheTerrorists implements Gamable,Runnable {
 
 
 
-
-
-    @Override
-    public void Manualgame() {
-
-    }
 
 
 
@@ -557,7 +535,6 @@ public class killTheTerrorists implements Gamable,Runnable {
             }
         }
 
-        System.out.println("time is "+min);
         if(min>300) return  200;
         if(min<50) return  50;
         return (long) min;
@@ -588,11 +565,6 @@ public class killTheTerrorists implements Gamable,Runnable {
         Gui gui = new Gui();
         gui.play(args);
 
-        killTheTerrorists test = new killTheTerrorists();
-
-        test.gameInit(0);
-
-        test.Automaticplay();
 
     }
 }
