@@ -321,6 +321,7 @@ public class Graph_Algo implements graph_algorithms {
 	 */
 
 	public double shortestPathDist(int src, int dest,boolean reset) {
+		if(src==dest) return  0;
 		if(reset)  { List<node_data> ranDist=shortestPath( src,  dest);}
 		return this.algoGraph.getNodeMap().get(dest).getWeight(); // we add the path from srart to first node because start is not part of the list
 	}
