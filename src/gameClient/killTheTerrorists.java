@@ -287,15 +287,7 @@ public class killTheTerrorists implements Gamable,Runnable {
 
         for (int i = 0; i < robots.length; i++) {
 
-//             if (robots[i].isOnWay()) {
-//                for (int r = 0; r <fruits.length ; r++) { //zero the fruit  price tp infinity
-//                    if(fruits[r].equals(robots[i].getTarget())) {
-//                        fruits[r].setCoast(robots[i].getCoast());
-//                        System.out.println("resore price "+robots[i].getCoast());
-//                    }
-//                }
-//                continue;
-//            }
+
             robots[i].setCoast(Integer.MAX_VALUE);
 
             int src = robots[i].getSrcNode();
@@ -322,7 +314,7 @@ public class killTheTerrorists implements Gamable,Runnable {
                 shortTempList.addLast(this.getGameGraph().getAlgoGraph().getNode(end)); // puth the last node at the end of the list
                 tempCoast = ((GameGraph.shortestPathDist(src, dst,false)+fruits[j].getEdgeOfFruit().getWeight())/robots[i].getSpeed());
                 if ( shortTempList != null&&fruits[j].getWeight()>tempCoast&&robots[i].getCoast() > tempCoast) {// we found a faster way
-                    System.out.println("robot number "+robots[i].getID()+"has picked new target "+fruits[j].getValue()+"the time to the fruit is "+tempCoast);
+                   // System.out.println("robot number "+robots[i].getID()+"has picked new target "+fruits[j].getValue()+"the time to the fruit is "+tempCoast);
                     robots[i].setTarget(fruits[j].getLocation());
                     robots[i].setRoute(shortTempList);
                     robots[i].setCoast(tempCoast);
@@ -330,7 +322,7 @@ public class killTheTerrorists implements Gamable,Runnable {
                     fruits[j].setCoast(tempCoast);
                     for(int r =0 ; r<i ;r++) { // if some other robot is aiming at curr fruit recalculate fot them
                      if(robots[r].getTarget().equals(robots[i].getTarget())) {robots[r].setOnWay(false);
-                     System.out.println("robot number "+robots[r].getID()+"target was deletet "+fruits[j].getValue());
+                  //   System.out.println("robot number "+robots[r].getID()+"target was deletet "+fruits[j].getValue());
                     }}
 
                 }
@@ -522,6 +514,70 @@ public class killTheTerrorists implements Gamable,Runnable {
                 '}';
     }
 
+
+    public  boolean chechFast(){
+        boolean fast =false;
+        for(int i = 0 ; i<robots.length;i++){
+            if(robots[i].getCoast()<1) return  true;
+        }
+
+        return fast;
+    }
+
+
+    public double convertTOMeters(double lat1, double lon1, double lat2,double lon2){  // generally used geo measurement function
+
+        if(lat2==Double.MAX_VALUE) return -1;
+
+        double R = 6378.137; // Radius of earth in KM
+        double dLat = lat2 * Math.PI / 180 - lat1 * Math.PI / 180;
+        double dLon = lon2 * Math.PI / 180 - lon1 * Math.PI / 180;
+        double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                        Math.sin(dLon/2) * Math.sin(dLon/2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        double d = R * c;
+        return (d * 1000); // meters
+    }
+
+
+
+    public  long chechFastMil(){
+        updateRobot();
+        double min = Double.MAX_VALUE;
+        for(int i = 0 ; i<robots.length;i++){
+            double diss =convertTOMeters(robots[i].getLocation().y(),robots[i].getLocation().x(),robots[i].getTarget().y(),robots[i].getTarget().x());
+            if(diss<min) {
+                min =diss;
+               min= min/robots[i].getSpeed();
+            }
+        }
+
+        System.out.println("time is "+min);
+        if(min>130) return  130;
+        if(min<70) return  50;
+        return (long) min;
+
+    }
+
+
+
+    @Override
+    public void run() {
+        boolean fast;
+        try {
+            while (server.isRunning()) {
+                fast =false;
+                server.move();
+             Thread.sleep(chechFastMil()); //70
+            }} catch (Exception e) {
+            System.out.println("Game has ended");
+            System.out.println();
+        }
+
+    }
+
+
     public static void main(String[] args) {
         Gui gui = new Gui();
         gui.play(args);
@@ -533,30 +589,5 @@ public class killTheTerrorists implements Gamable,Runnable {
         test.Automaticplay();
 
     }
-
-    @Override
-    public void run() {
-        boolean fast=false;
-        boolean slow =false;
-        try {
-            while (server.isRunning()) {
-                fast =false;
-                for(int i = 0 ; i<robots.length;i++){
-
-                    if(robots[i].getRoute()==null||robots[i].getRoute().size()<=2) fast =true;
-                  //  if(robots[i].getSpeed()<2) {slow=true;  }
-                }
-                server.move();
-               if(fast)  Thread.sleep(3); //70
-              else Thread.sleep(5); //250
-            }} catch (Exception e) {
-            System.out.println("Game has ended");
-            System.out.println();
-        }
-
-    }
-
-
-
 }
 

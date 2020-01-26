@@ -244,60 +244,60 @@ public class Gui extends Application implements Drawable, EventHandler {
         messeges.getChildren().add(teror);
         startMessege.setFill(Color.DARKGOLDENROD);
 
-//
-//
-//// Create the custom dialog.
-//        Dialog<Pair<String, String>> dialog = new Dialog<>();
-//        dialog.setTitle("Kill the terrosrist");
-//        dialog.setHeaderText("Login");
-//
-//// Set the icon (must be included in the project).
-//        dialog.setGraphic(new ImageView(tank));
-//
-//// Set the button types.
-//        ButtonType loginButtonType = new ButtonType("Start ", ButtonBar.ButtonData.OK_DONE);
-//        dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
-//
-//// Create the username and password labels and fields.
-//        GridPane grid = new GridPane();
-//        grid.setHgap(10);
-//        grid.setVgap(10);
-//        grid.setPadding(new Insets(20, 150, 10, 10));
-//
-//        TextField username = new TextField();
-//        username.setPromptText("ID");
-//
-//
-//        grid.add(new Label("ID:"), 0, 0);
-//        grid.add(username, 1, 0);
-//
-//// Enable/Disable login button depending on whether a username was entered.
-//        Node loginButton = dialog.getDialogPane().lookupButton(loginButtonType);
-//        loginButton.setDisable(true);
-//
-//// Do some validation (using the Java 8 lambda syntax).
-//        username.textProperty().addListener((observable, oldValue, newValue) -> {
-//            loginButton.setDisable(newValue.trim().isEmpty());
-//        });
-//
-//        dialog.getDialogPane().setContent(grid);
-//
-//// Request focus on the username field by default.
-//        Platform.runLater(() -> username.requestFocus());
-//
-//// Convert the result to a username-password-pair when the login button is clicked.
-//        dialog.setResultConverter(dialogButton -> {
-//            if (dialogButton == loginButtonType) {
-//                return new Pair<>(username.getText(),null);
-//            }
-//            return null;
-//        });
-//
-//        Optional<Pair<String, String>> result = dialog.showAndWait();
-//
-//        result.ifPresent(usernamePassword -> {
-//          Game_Server.login(Integer.parseInt(usernamePassword.getKey()));
-//        });
+
+
+// Create the custom dialog.
+        Dialog<Pair<String, String>> dialog = new Dialog<>();
+        dialog.setTitle("Kill the terrosrist");
+        dialog.setHeaderText("Login");
+
+// Set the icon (must be included in the project).
+        dialog.setGraphic(new ImageView(tank));
+
+// Set the button types.
+        ButtonType loginButtonType = new ButtonType("Start ", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
+
+// Create the username and password labels and fields.
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+
+        TextField username = new TextField();
+        username.setPromptText("ID");
+
+
+        grid.add(new Label("ID:"), 0, 0);
+        grid.add(username, 1, 0);
+
+// Enable/Disable login button depending on whether a username was entered.
+        Node loginButton = dialog.getDialogPane().lookupButton(loginButtonType);
+        loginButton.setDisable(true);
+
+// Do some validation (using the Java 8 lambda syntax).
+        username.textProperty().addListener((observable, oldValue, newValue) -> {
+            loginButton.setDisable(newValue.trim().isEmpty());
+        });
+
+        dialog.getDialogPane().setContent(grid);
+
+// Request focus on the username field by default.
+        Platform.runLater(() -> username.requestFocus());
+
+// Convert the result to a username-password-pair when the login button is clicked.
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == loginButtonType) {
+                return new Pair<>(username.getText(),null);
+            }
+            return null;
+        });
+
+        Optional<Pair<String, String>> result = dialog.showAndWait();
+
+        result.ifPresent(usernamePassword -> {
+          Game_Server.login(Integer.parseInt(usernamePassword.getKey()));
+        });
 
 
         // Adds a Canvas
@@ -789,7 +789,7 @@ public class Gui extends Application implements Drawable, EventHandler {
             point += sgame.getRobots()[i].getValue();
         }
         sgame.updatePlayerStatus();
-        Text timeMessege = new Text(screenWidth / 7, screenHeight / 2, "Game Has Ended\nYour score is " + sgame.getGrade()+"\tNumber of moves"+sgame.getMoves()+"\nYour Level status is "+sgame.getMaxLevel()+1);
+        Text timeMessege = new Text(screenWidth /9, screenHeight / 2, "Game Has Ended\nYour score is " + sgame.getGrade()+"\tNumber of moves"+sgame.getMoves()+"\nYour Level status is "+sgame.getMaxLevel()+1);
         timeMessege.setFont(javafx.scene.text.Font.font("Verdana", FontWeight.BOLD, 70));
         timeMessege.setFill(Color.RED);
         messeges.getChildren().clear();
@@ -838,7 +838,7 @@ public class Gui extends Application implements Drawable, EventHandler {
 
 
             try {
-                // Game_Server.login(Integer.parseInt("320986979"));
+                Game_Server.login(Integer.parseInt("320986979"));
                 sgame = new killTheTerrorists();
                 sgame.updatePlayerStatus();
                 sgame.gameInit((int)sgame.getMaxLevel());
@@ -848,8 +848,11 @@ public class Gui extends Application implements Drawable, EventHandler {
                 sgame.getServer().startGame();
                 new Thread(new killTheTerrorists()).start();
                 while (sgame.getServer().isRunning()) {
+                    sgame.updatePlayerStatus();
                     sgame.move();
+                    System.out.println(sgame.getGrade());
                 }
+                System.out.println(sgame.getGrade());
 
 
 
