@@ -221,13 +221,13 @@ public class killTheTerrorists implements Gamable,Runnable {
             for (int i = 0; i < robots.length; i++) {
                 if (robots[i].getRoute() == null || robots[i].getRoute().isEmpty() ||!robots[i].isOnWay() ) { //if robot already geted to it's target
                     robots[i].setOnWay(false);
-                    calcShortestPath(true);}
+                    calcShortestPath();}
                     deepCopyFruit();
                    if(robots[i].getRoute()!=null){ server.chooseNextEdge(robots[i].getID(), robots[i].getRoute().get(0).getKey());
                     if(robots[i].getSrcNode() == robots[i].getRoute().get(0).getKey()) {
                         robots[i].getRoute().remove(0);}
                         if(!Arrays.equals(fruitsHistory,fruits)) {
-                            calcShortestPath(true);}
+                            calcShortestPath();}
 
                     }
                 }
@@ -246,22 +246,31 @@ public class killTheTerrorists implements Gamable,Runnable {
      * and each time a robot is choosing the nearest target
      * @param zeroFruit if you want to zero the fruit value
      */
-    private synchronized void calcShortestPath(boolean zeroFruit) {
+    private synchronized void calcShortestPath() {
         int dst = -1;
         int end = -1;
         double tempCoast;
         initFruits();
         updateRobots();
 
-        if(zeroFruit){ //if it's a second calc for this fruit dua a beeter robot captured it target do not zero the fruit frice
-        for (int i = 0; i <fruits.length ; i++) { //zero the fruit  price tp infinity
-            fruits[i].setCoast(Integer.MAX_VALUE);
-        }}
+        for (int j = 0; j < fruits.length; j++) {
+            fruits[j].setCoast(Integer.MAX_VALUE);
+        }
+
+         //if it's a second calc for this fruit dua a beeter robot captured it target do not zero the fruit frice
+            for (int i = 0; i <robots.length ; i++) { //zero the fruit  price tp infinity
+                for (int j = 0; j <fruits.length ; j++) {
+                    if(robots[i].isOnWay()&&robots[i].getTarget().equals(fruits[j].getLocation())){
+                        fruits[j].setCoast(robots[i].getCoast());
+                    }
+                }
+            }
+
 
         for (int i = 0; i < robots.length; i++) {
 
-
             robots[i].setCoast(Integer.MAX_VALUE);
+
 
             int src = robots[i].getSrcNode();
 
@@ -288,6 +297,11 @@ public class killTheTerrorists implements Gamable,Runnable {
                 tempCoast = ((GameGraph.shortestPathDist(src, dst,false)+fruits[j].getEdgeOfFruit().getWeight())/robots[i].getSpeed());
                 if ( shortTempList != null&&fruits[j].getWeight()>tempCoast&&robots[i].getCoast() > tempCoast) {// we found a faster way
                    // System.out.println("robot number "+robots[i].getID()+"has picked new target "+fruits[j].getValue()+"the time to the fruit is "+tempCoast);
+                    if(robots[i].getTarget()!=null) {// if the robot has an old target free the old fruit's
+                        for(int k =0 ; k<fruits.length;k++) {
+                            if(robots[i].getTarget().equals(fruits[k])) fruits[k].setCoast(Integer.MAX_VALUE);
+                        }
+                    }
                     robots[i].setTarget(fruits[j].getLocation());
                     robots[i].setRoute(shortTempList);
                     robots[i].setCoast(tempCoast);
@@ -295,7 +309,7 @@ public class killTheTerrorists implements Gamable,Runnable {
                     fruits[j].setCoast(tempCoast);
                     for(int r =0 ; r<i ;r++) { // if some other robot is aiming at curr fruit recalculate fot them
                      if(robots[r].getTarget().equals(robots[i].getTarget())) {robots[r].setOnWay(false);
-                  //   System.out.println("robot number "+robots[r].getID()+"target was deletet "+fruits[j].getValue());
+                          //   System.out.println("robot number "+robots[r].getID()+"target was deletet "+fruits[j].getValue());
                     }}
 
                 }
