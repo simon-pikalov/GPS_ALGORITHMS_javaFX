@@ -241,8 +241,10 @@ public class killTheTerrorists implements Gamable,Runnable {
     }
 
     /**
-     * this function calcs the shrtest path using dijacsra algotithem
-     * @param zeroFruit if you wnat to zero the fruit value
+     * this function calc's the shortest path using dijacsra algotithem
+     * the function prevent a few robots from choosing the same fruit
+     * and each time a robot is choosing the nearest target
+     * @param zeroFruit if you want to zero the fruit value
      */
     private synchronized void calcShortestPath(boolean zeroFruit) {
         int dst = -1;
@@ -330,11 +332,6 @@ public class killTheTerrorists implements Gamable,Runnable {
 
 
     }
-
-
-
-
-
 
 
     public game_service getServer() {
@@ -506,7 +503,14 @@ public class killTheTerrorists implements Gamable,Runnable {
         return fast;
     }
 
-
+    /**
+     * function to calc tidtense between two points of gps
+     * @param lat1 gps cord 1  lat
+     * @param lon1 gps cord 1  lan
+     * @param lat2 gps cord 2  lat
+     * @param lon2 gps cord 1  lan
+     * @return
+     */
     public double convertTOMeters(double lat1, double lon1, double lat2,double lon2){  // generally used geo measurement function
 
         if(lat2==Double.MAX_VALUE) return -1;
@@ -523,7 +527,10 @@ public class killTheTerrorists implements Gamable,Runnable {
     }
 
 
-
+    /**
+     *
+     * @return an amount of mill to sleep for dinamic thred
+     */
     public  long chechFastMil(){
         updateRobot();
         double min = Double.MAX_VALUE;
@@ -542,7 +549,10 @@ public class killTheTerrorists implements Gamable,Runnable {
     }
 
 
-
+    /**
+     * function to move the robo's inside the server with the minimal amount
+     * of steps on automatic mode and normal on Auto mode
+     */
     @Override
     public void run() {
         boolean fast;

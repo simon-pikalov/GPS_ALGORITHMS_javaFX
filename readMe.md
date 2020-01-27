@@ -14,7 +14,7 @@ This  project represents a Game based a graph-theory algorithms and java Gui Imp
   - Automatic  Game based on Dijkstra Algorithm
   -show statistics from server 
  
-  
+
   
 ### Installation
 To Run the Game you must have the JavaFx Sdk if your using intellij it should come pre instaled otherwise 
@@ -24,7 +24,14 @@ Then
 Pull the file from the Git repository with the command : 
 ```sh
 $ git clone --recusive https://github.com/simon-pikalov/GPS_ALGORITHMS_javaFX.git`
+
+
+
 ```
+
+# The gui Package 
+![](photoLib/uml2.png)
+
 ### The Gui Class : 
 This class represent a Gui as JavaFX Application of the Game Catch The Terrorist
 This class can be changed to Draw all the games the iplement Gamable Interface,
@@ -36,6 +43,11 @@ Main method's  :
 - onUpdate
 - ManualGame
 - play
+- statistic
+
+
+# The gameClient Package 
+![](photoLib/uml.png)
 
 ### The killTheTerrorist  Class : 
  * This class represent a Utils for the game  catch The Terrorist.
@@ -69,4 +81,32 @@ Main method's  :
 - getType
 - getLocation
 - fruit
+
+
+# Game instructions : 
+
+
+#### First of all You can Login (optional) :
+
+ ![](photoLib/login.png)
+ 
+ 
+  #### Then to the game will start  : 
+  
+   ![](photoLib/open.png)
+ 
+ ####  To play  select a scene : 
+ 
+  ![](photoLib/menu.png)
+ 
+  ####  Then chose a Game mode : Automatic or manual , if Your on Manual pres the tank and the a number to move if your on Auto no Actions is needed  : 
+  
+  
+   ![](photoLib/game.png)
+   
+ #### To view statics's press the statics's button   : 
+     
+  ![](photoLib/statistics.png)
+   
+   
 

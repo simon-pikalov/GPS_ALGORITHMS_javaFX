@@ -827,7 +827,11 @@ public class Gui extends Application implements Drawable, EventHandler {
         }
     }
 
-    private void automatic() {
+    /**
+     * automatic play of the game
+     */
+    @Override
+    public void automatic() {
         killTheTerrorists mGame = (killTheTerrorists) sgame;
         server=mGame.getServer();
         game.getChildren().remove(messeges);
