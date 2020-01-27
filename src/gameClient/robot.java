@@ -10,6 +10,7 @@ import org.json.JSONObject;
 import utils.Point3D;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Thic class Implement Robot interface and it's an inctence of
@@ -182,6 +183,26 @@ public class robot implements robots {
                 '}';
     }
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof robot)) return false;
+        robot robot = (robot) o;
+        return getID() == robot.getID() &&
+                getSrcNode() == robot.getSrcNode() &&
+                getDestNode() == robot.getDestNode() &&
+                Double.compare(robot.getValue(), getValue()) == 0 &&
+                Double.compare(robot.getSpeed(), getSpeed()) == 0 &&
+                Objects.equals(getLocation(), robot.getLocation());
+
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getID(), getLocation(), getSrcNode(), getDestNode(), getValue(), getSpeed(), getCoast(), isOnWay(), getTarget(), getRoute());
+    }
+
     public void setID(int ID) {
         this.ID = ID;
     }
@@ -224,6 +245,7 @@ this.coast=coast;
     public Point3D getTarget() {
         return target;
     }
+
     @Override
     public void setTarget(Point3D target) {
         this.target = target;

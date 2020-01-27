@@ -32,7 +32,7 @@ public class killTheTerrorists implements Gamable,Runnable {
     private int seem = 0;
     private KML_ kml;
     private  double grade;
-    private double maxLevel;
+    private int maxLevel;
     private int moves;
     private static boolean manual;
     private int userId;
@@ -318,7 +318,7 @@ public class killTheTerrorists implements Gamable,Runnable {
             JSONObject server = line.getJSONObject("GameServer");
           grade  = server.getDouble("grade");
         grade  = server.getDouble("grade");
-        maxLevel = server.getDouble("max_user_level");
+        maxLevel = server.getInt("max_user_level");
         moves=server.getInt("moves");
 
         }
@@ -369,11 +369,11 @@ public class killTheTerrorists implements Gamable,Runnable {
         this.grade = grade;
     }
 
-    public double getMaxLevel() {
+    public int getMaxLevel() {
         return maxLevel;
     }
 
-    public void setMaxLevel(double maxLevel) {
+    public void setMaxLevel(int maxLevel) {
         this.maxLevel = maxLevel;
     }
 
@@ -550,8 +550,8 @@ public class killTheTerrorists implements Gamable,Runnable {
             while (server.isRunning()) {
                 fast =false;
                 server.move();
-             if(!isManual())Thread.sleep(chechFastMil()); //70
-                else Thread.sleep(20);
+         //    if(!isManual())Thread.sleep(50); //70
+                 Thread.sleep(105);
 
             }} catch (Exception e) {
             System.out.println("Game has ended");
