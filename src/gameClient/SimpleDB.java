@@ -4,7 +4,9 @@
 	import java.sql.ResultSet;
 	import java.sql.SQLException;
 	import java.sql.Statement;
-/**
+	import java.util.ArrayList;
+
+	/**
  * This class represents a simple example of using MySQL Data-Base.
  * Use this example for writing solution.
  * @author boaz.benmoshe
@@ -14,6 +16,10 @@ public class SimpleDB {
 	public static final String jdbcUrl="jdbc:mysql://db-mysql-ams3-67328-do-user-4468260-0.db.ondigitalocean.com:25060/oop?useUnicode=yes&characterEncoding=UTF-8&useSSL=false";
 	public static final String jdbcUser="student";
 	public static final String jdbcUserPassword="OOP2020student";
+	public static ArrayList<Double> bestResualtGroup;
+	public static ArrayList<Double> avgGroup;
+	public static ArrayList<Double> bestResualrPlayer;
+	public static int  gamePlayed;
 
 	/**
 	 * Simple main for demonstrating the use of the Data-base
@@ -23,8 +29,10 @@ public class SimpleDB {
 			int id1 = 320986979;  // "real" existing ID & KML
 			int id2 = 320986979;
 			int level = 0;//1,2,3
-			allUsers();
-			//String kml1 = getKML(id1,level);
+		initStatistics(320986979);
+		System.out.println(bestResualtGroup);
+		System.out.println(avgGroup);
+		System.out.println(bestResualrPlayer);
 			System.out.println("***** KML1 file example: ******");
 			//System.out.println(kml1);
 		}
@@ -41,11 +49,8 @@ public class SimpleDB {
 
 				ResultSet resultSet = statement.executeQuery(allCustomersQuery);
 				int ind =0;
-				while(resultSet.next())
-				{
-					System.out.println(ind+") Id: " + resultSet.getInt("UserID")+", level: "+resultSet.getInt("levelID")+", score: "+resultSet.getInt("score")+", moves: "+resultSet.getInt("moves")+", time: "+resultSet.getDate("time"));
-					ind++;
-				}
+
+				System.out.println(resultSet.getString("Maximum_Value"));
 				resultSet.close();
 				statement.close();
 				connection.close();
@@ -59,6 +64,85 @@ public class SimpleDB {
 				e.printStackTrace();
 			}
 		}
+
+		/**
+		 *  initiate 3 arrayish with user best of every step , of best result from the group and of average group result and the number of games played.
+		 * @param id the user id
+		 */
+	public static void initStatistics (int id) {
+		try {
+
+			bestResualtGroup = new ArrayList<Double>();
+			avgGroup= new ArrayList<Double>();
+			bestResualrPlayer =  new ArrayList<Double>();
+
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection connection =
+					DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcUserPassword);
+			Statement statement = connection.createStatement();
+
+			String allCustomersQuery = "SELECT * FROM Logs where userID="+id;
+
+			ResultSet resultSet = statement.executeQuery(allCustomersQuery);
+
+			while(resultSet.next())
+			{
+				SimpleDB.gamePlayed++;
+			}
+
+
+			for (int scene = 0 ;scene<24 ; scene++ ) {
+
+				//user loged in  best resualt
+				String myMaxQ = " SELECT MAX (score) AS my_best  FROM oop.Logs  WHERE USERID ="+id+" and levelID ="+scene;
+				 resultSet = statement.executeQuery(myMaxQ);
+				int i =0;
+				resultSet.next();
+					bestResualrPlayer.add(i,resultSet.getDouble("my_best"));
+
+
+
+				String bestGroupQ = " SELECT MAX (score) AS group_best  FROM oop.Logs  WHERE levelID ="+scene;
+				resultSet = statement.executeQuery(bestGroupQ);
+				i =0;
+				resultSet.next();
+					bestResualtGroup.add(i,resultSet.getDouble("group_best"));
+
+
+
+
+				String avgGroupQ =  " SELECT AVG (score) AS group_avg  FROM oop.Logs  WHERE levelID ="+scene;
+				resultSet = statement.executeQuery(avgGroupQ);
+				i =0;
+				resultSet.next();
+					avgGroup.add(i,resultSet.getDouble("group_avg"));
+					resultSet.close();
+
+
+			}
+
+
+
+
+			connection.close();
+
+		}
+
+		catch (SQLException sqle) {
+			System.out.println("SQLException: " + sqle.getMessage());
+			System.out.println("Vendor Error: " + sqle.getErrorCode());
+		}
+		catch (ClassNotFoundException e) {
+			e.printStackTrace();
+
+		}
+
+	}
+
+
+
+
+
 	/**
 	 * this function returns the KML string as stored in the database (userID, level);
 	 * @param id

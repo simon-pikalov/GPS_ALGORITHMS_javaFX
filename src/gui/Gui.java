@@ -383,7 +383,7 @@ public class Gui extends Application implements Drawable, EventHandler {
         statistics.setOnAction(this);
         statistics.setId("stat");
         statistics.setTranslateY(20);
-        statistics.setTranslateX(350);
+        statistics.setTranslateX(280);
         statistics.setStyle("-fx-background-color: #a0a093; ");
 
 
@@ -466,19 +466,17 @@ public class Gui extends Application implements Drawable, EventHandler {
      */
     public  void  drawStatistics(){
 
+        sgame.gameInit(0);
         sgame.updatePlayerStatus();
+        System.out.println(sgame.getServer());
+        System.out.println(sgame.getMaxLevel());
 
-        String austria = "Austria";
-        String brazil = "Brazil";
-        final  String france = "France";
-        final  String italy = "Italy";
-        final  String usa = "USA";
-
+        SimpleDB.initStatistics(id);
 
         final CategoryAxis xAxis = new CategoryAxis();
         final NumberAxis yAxis = new NumberAxis();
         final BarChart<String,Number> bc = new BarChart<String,Number>(xAxis,yAxis);
-        bc.setTitle("loged in as "+id+" Max Level is "+sgame.getMaxLevel());
+        bc.setTitle("loged in as "+id+" Max Level is "+sgame.getMaxLevel()+" Total number of Games is "+SimpleDB.gamePlayed);
         xAxis.setLabel("Scene");
         yAxis.setLabel("Best score");
 
@@ -487,23 +485,27 @@ public class Gui extends Application implements Drawable, EventHandler {
 
         XYChart.Series series2 = new XYChart.Series();
 
-        series1.setName("Player resualt");
-        series2.setName("Group resualt");
-
         XYChart.Series series3 = new XYChart.Series();
+        series1.setName("Player best");
+        series2.setName("Group best");
+        series3.setName("Group avarage");
+
 
 
 
         for (int i = 0; i <24 ; i++) {
-            series1.getData().add(new XYChart.Data(Integer.toString(i), Math.random()*1000));
-            series1.setName("scene"+Integer.toString(i));
-            series2.getData().add(new XYChart.Data(Integer.toString(i), Math.random()*1000));
+
+
+            series1.getData().add(new XYChart.Data(Integer.toString(i),SimpleDB.bestResualrPlayer.get(i)));
+            series2.getData().add(new XYChart.Data(Integer.toString(i), SimpleDB.bestResualtGroup.get(i)));
+            series3.getData().add(new XYChart.Data(Integer.toString(i), SimpleDB.avgGroup.get(i)));
         }
 
         bc.setStyle("-fx-background-color: #b3ff81; ");
         bc.getData().addAll(series1, series2, series3);
-        bc.setPrefSize(screenWidth,screenHeight);
-        bc.setTranslateY(50);
+        bc.setTranslateX(screenWidth*0.1);
+        bc.setTranslateY(screenHeight*0.1);
+        bc.setPrefSize(screenWidth*0.9,screenHeight*0.9);
         statisticsGroup.getChildren().add(bc);
         game.getChildren().add(statisticsGroup);
 
