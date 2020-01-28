@@ -575,7 +575,7 @@ public class killTheTerrorists implements Gamable,Runnable {
                 fast =false;
                 server.move();
          //    if(!isManual())Thread.sleep(50); //70
-                 Thread.sleep(47);
+                 Thread.sleep(49);
 
             }} catch (Exception e) {
             System.out.println("Game has ended");

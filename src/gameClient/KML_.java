@@ -178,5 +178,13 @@ public class KML_ implements Runnable {
         }
         return PlaceMark;
     }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
 }
 

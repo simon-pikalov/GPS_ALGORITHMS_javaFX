@@ -73,6 +73,7 @@ public class Gui extends Application implements Drawable, EventHandler {
     private  static  int robotMax;
     private  static  boolean auto;
     private static  int id;
+    KML_ kml;
 
 
 
@@ -231,11 +232,12 @@ public class Gui extends Application implements Drawable, EventHandler {
         statisticsGroup = new Group();
         root.getChildren().add(statisticsGroup);
         // load the image
-        terrotistAImage= new Image(new FileInputStream("1.png"));
-        terrotistBImage= new Image(new FileInputStream("-1.png"));
-        isis= new Image(new FileInputStream("isiflag.jpg"));
-        tank = new Image(new FileInputStream("tank-top (1).png"));
-        map= new Image(new FileInputStream("syria.png"));
+        //this.getClass().getResourceAsStream("/com/mycompany/myapplication/pic/classic/image1.png
+        terrotistAImage= new Image(this.getClass().getResourceAsStream("/gui/guiPic/1.png"));
+        terrotistBImage= new Image(this.getClass().getResourceAsStream("/gui/guiPic/-1.png"));
+        isis= new Image(this.getClass().getResourceAsStream("/gui/guiPic/isiflag.jpg"));
+        tank = new Image(this.getClass().getResourceAsStream("/gui/guiPic/tank-top (1).png"));
+        map= new Image(this.getClass().getResourceAsStream("/gui/guiPic/syria.png"));
 
 
         ImageView syria = new ImageView(map);
@@ -522,6 +524,13 @@ public class Gui extends Application implements Drawable, EventHandler {
      */
     public  void DrawGame(Group game ) {
 
+        try {
+            kml = new KML_(server,sgame.getScenario());
+
+        }catch (Exception f ) {
+
+        }
+
 
 
         robotMax=0;
@@ -763,6 +772,7 @@ public class Gui extends Application implements Drawable, EventHandler {
 
         auto=false;
 
+
         robotMax =5;
         final int[] currHelicopter = {-1};
         killTheTerrorists mGame = (killTheTerrorists) sgame;
@@ -869,6 +879,12 @@ public class Gui extends Application implements Drawable, EventHandler {
 
 
     private void endOfGame (){
+
+        try {
+            server.sendKML(kml.getContent());
+        }catch (RuntimeException r){
+            System.out.println(r.getCause());
+        }
         double point = 0;
         timeGame.stop();
         for (int i = 0; i < sgame.getRobots().length; i++) {
