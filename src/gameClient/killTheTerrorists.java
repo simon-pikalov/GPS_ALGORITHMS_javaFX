@@ -65,7 +65,7 @@ public class killTheTerrorists implements Gamable,Runnable {
     @Override
     public void builderGame() {
         this.GameGraph = new Graph_Algo();
-        if (server.equals(null)) throw new RuntimeException("server is empty  ");
+        if (server==null) throw new RuntimeException("server is empty  ");
         GameGraph.initJson(server.getGraph().toString());
     }
 
@@ -244,7 +244,6 @@ public class killTheTerrorists implements Gamable,Runnable {
      * this function calc's the shortest path using dijacsra algotithem
      * the function prevent a few robots from choosing the same fruit
      * and each time a robot is choosing the nearest target
-     * @param zeroFruit if you want to zero the fruit value
      */
     private synchronized void calcShortestPath() {
         int dst = -1;
@@ -334,7 +333,6 @@ public class killTheTerrorists implements Gamable,Runnable {
             JSONObject server = line.getJSONObject("GameServer");
           grade  = server.getDouble("grade");
         maxLevel = server.getInt("max_user_level");
-            System.out.println(maxLevel);
         moves=server.getInt("moves");
 
         }
