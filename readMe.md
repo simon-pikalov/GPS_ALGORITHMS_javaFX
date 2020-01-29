@@ -23,9 +23,7 @@ check this repo for the SDK :  https://gluonhq.com/products/javafx/
 Then 
 Pull the file from the Git repository with the command : 
 ```sh
-$ git clone --recusive https://github.com/simon-pikalov/GPS_ALGORITHMS_javaFX.git`
-
-
+$ git clone https://github.com/simon-pikalov/GPS_ALGORITHMS_javaFX.git
 
 ```
 
