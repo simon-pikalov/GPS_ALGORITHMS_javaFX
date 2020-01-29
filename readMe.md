@@ -53,6 +53,7 @@ Main method's  :
  * This class represent a Utils for the game  catch The Terrorist.
  * The  class communicate with the server to send and receive data from it ;
  * This game uses Datastucture method's such as shortest path and more for the game algorithm
+ * 
 Main method's  : 
 - Automaticplay
 - builderGame
@@ -60,6 +61,7 @@ Main method's  :
 - getGameGraph
 - initFruits
 - Manualgame
+- chechFastMil
 SamCatchRon
 ### The Robot  Class : 
 This class Implement Robot interface and it's an inctence of

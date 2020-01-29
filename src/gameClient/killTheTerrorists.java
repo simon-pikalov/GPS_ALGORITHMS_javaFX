@@ -226,8 +226,16 @@ public class killTheTerrorists implements Gamable,Runnable {
                    if(robots[i].getRoute()!=null){ server.chooseNextEdge(robots[i].getID(), robots[i].getRoute().get(0).getKey());
                     if(robots[i].getSrcNode() == robots[i].getRoute().get(0).getKey()) {
                         robots[i].getRoute().remove(0);}
-                        if(!Arrays.equals(fruitsHistory,fruits)) {
-                            calcShortestPath();}
+                        initFruits();
+
+
+                    // this code fragment needet to be tuned some more :
+//                        if(!Arrays.equals(fruitsHistory,fruits)) {
+//                            for (int j = 0; j < robots.length; j++) {
+//                                robots[j].setOnWay(false);
+//                            }
+//                            calcShortestPath();
+//                            System.out.println("reload");}
 
                     }
                 }
@@ -252,6 +260,8 @@ public class killTheTerrorists implements Gamable,Runnable {
         initFruits();
         updateRobots();
 
+
+
         for (int j = 0; j < fruits.length; j++) {
             fruits[j].setCoast(Integer.MAX_VALUE);
         }
@@ -268,8 +278,9 @@ public class killTheTerrorists implements Gamable,Runnable {
 
         for (int i = 0; i < robots.length; i++) {
 
-            robots[i].setCoast(Integer.MAX_VALUE);
+            if(robots[i].isOnWay()) continue;
 
+            robots[i].setCoast(Integer.MAX_VALUE);
 
             int src = robots[i].getSrcNode();
 
@@ -542,6 +553,8 @@ public class killTheTerrorists implements Gamable,Runnable {
     /**
      *
      * @return an amount of mill to sleep for dinamic thred
+     * to use the dynamic thread use the chechFastMil() function inside the sleep in this way
+     * sleep(chechFastMil() )
      */
     public  long chechFastMil(){
         updateRobot();
@@ -573,7 +586,7 @@ public class killTheTerrorists implements Gamable,Runnable {
                 fast =false;
                 server.move();
          //    if(!isManual())Thread.sleep(50); //70
-                 Thread.sleep(49);
+                 Thread.sleep(50);
 
             }} catch (Exception e) {
             System.out.println("Game has ended");

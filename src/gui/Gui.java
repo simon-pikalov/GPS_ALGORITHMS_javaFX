@@ -31,13 +31,9 @@ import javafx.stage.Stage;
 import javafx.util.Pair;
 import oop_utils.OOP_Point3D;
 import utils.Point3D;
-
 import javafx.scene.paint.Color;
-
 import java.awt.Dimension;
-
 import java.awt.Toolkit;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Optional;
 

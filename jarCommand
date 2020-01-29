@@ -1,0 +1,1 @@
+java --module-path --add-modules javafx.controls,javafx.fxml,javafx.graphics,javafx.media,javafx.swing,javafx.media,javafx.web server -jar GPS_ALGORITHMS_javaFX.jar
